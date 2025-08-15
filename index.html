@@ -7,41 +7,30 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <!-- HEADER -->
+  <!-- HEADER NAVIGATION -->
   <header>
-    <div class="logo">🌐 My Portfolio</div>
-    <nav>
+    <nav class="navbar">
+      <button class="nav-btn">Home</button>
       <button class="nav-btn">Projects</button>
-      <button class="nav-btn">About Me</button>
+      <button class="nav-btn">About</button>
       <button class="nav-btn">Contact</button>
     </nav>
   </header>
 
-  <!-- MAIN CONTENT -->
+  <!-- FOLDER CONTENT -->
   <main>
-    <!-- Sidebar with project links -->
-    <aside class="sidebar">
-      <h2>Projects</h2>
-      <ul>
-        <li><button class="project-link" data-project="p1">🟣 Project One</button></li>
-        <li><button class="project-link" data-project="p2">🟢 Project Two</button></li>
-        <li><button class="project-link" data-project="p3">🔵 Project Three</button></li>
-        <li><button class="project-link" data-project="p4">🟡 Project Four</button></li>
-      </ul>
-    </aside>
-
-    <!-- Project Display Area -->
-    <section class="content">
-      <div id="project-display">
+    <div class="folder">
+      <div class="folder-tab">Projects</div>
+      <div class="folder-content" id="project-display">
         <h2>Welcome!</h2>
-        <p>Select a project from the sidebar to see more details.</p>
+        <p>Select a project from the navigation above to view details.</p>
       </div>
-    </section>
+    </div>
   </main>
 
   <!-- FOOTER -->
   <footer>
-    <p>© 2025 My Retro Portfolio | Made with 💾 + 🌈 Y2K Vibes</p>
+    <p>© 2025 My Retro Portfolio | Y2K vibes only ✨</p>
   </footer>
 
   <script src="script.js"></script>
