@@ -1,38 +1,49 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<title>Portfolio Home Page</title>
-	<link rel="stylesheet" type="text/css" href="./style.css">
-	<script src="myscripts.js"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Y2K Portfolio</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
+  <!-- HEADER -->
   <header>
-    <div class="header-inner">
-      <div class="logo">Abigail Mouser</div>
-    </div>
+    <div class="logo">🌐 My Portfolio</div>
+    <nav>
+      <button class="nav-btn">Projects</button>
+      <button class="nav-btn">About Me</button>
+      <button class="nav-btn">Contact</button>
+    </nav>
   </header>
 
-  <!-- Top navigation (folder tabs) -->
-  <nav class="topnav" aria-label="Primary">
-    <button class="tab active" data-page="about">About Me</button>
-    <button class="tab" data-page="projects">Projects</button>
-    <button class="tab" data-page="contact">Contact</button>
-    <button class="tab" data-page="blog">Blog</button>
-  </nav>
+  <!-- MAIN CONTENT -->
+  <main>
+    <!-- Sidebar with project links -->
+    <aside class="sidebar">
+      <h2>Projects</h2>
+      <ul>
+        <li><button class="project-link" data-project="p1">🟣 Project One</button></li>
+        <li><button class="project-link" data-project="p2">🟢 Project Two</button></li>
+        <li><button class="project-link" data-project="p3">🔵 Project Three</button></li>
+        <li><button class="project-link" data-project="p4">🟡 Project Four</button></li>
+      </ul>
+    </aside>
 
-  <div class="shell">
-    <div class="frame">
-      <!-- Left Sidebar -->
-      <aside class="sidebar">
-        <section class="box">
-          <h3>Abigail Mouser - Genius</h3>
-          <p>I promise I'm really smart.</p>
-        </section>
-        <section class="box">
-          <h3>Like what you see?</h3>
-          <p>You're the best.</p>
-        </section>
-      </aside>
+    <!-- Project Display Area -->
+    <section class="content">
+      <div id="project-display">
+        <h2>Welcome!</h2>
+        <p>Select a project from the sidebar to see more details.</p>
+      </div>
+    </section>
+  </main>
 
+  <!-- FOOTER -->
+  <footer>
+    <p>© 2025 My Retro Portfolio | Made with 💾 + 🌈 Y2K Vibes</p>
+  </footer>
+
+  <script src="script.js"></script>
 </body>
 </html>
