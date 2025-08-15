@@ -1,34 +1,99 @@
-// Get elements
-const projectLinks = document.querySelectorAll(".project-link");
-const projectDisplay = document.getElementById("project-display");
+/* ===== Reset ===== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
 
-// Fake project data
-const projects = {
-  p1: {
-    title: "Project One",
-    desc: "This is my very first retro-inspired project. It mixes early 2000s web design with modern code!"
-  },
-  p2: {
-    title: "Project Two",
-    desc: "This project is all about animations, glitter GIFs, and bright Y2K colors."
-  },
-  p3: {
-    title: "Project Three",
-    desc: "A throwback to classic Flash-era games and funky layouts."
-  },
-  p4: {
-    title: "Project Four",
-    desc: "A personal favorite: retro gradients, comic fonts, and clunky buttons that scream nostalgia."
-  }
-};
+/* ===== Body ===== */
+body {
+  font-family: "Comic Sans MS", "Trebuchet MS", sans-serif;
+  background: linear-gradient(135deg, #7ee8fa, #eec0c6);
+  color: #222;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
 
-// Add click listeners
-projectLinks.forEach(link => {
-  link.addEventListener("click", () => {
-    const project = projects[link.dataset.project];
-    projectDisplay.innerHTML = `
-      <h2>${project.title}</h2>
-      <p>${project.desc}</p>
-    `;
-  });
-});
+/* ===== Navbar ===== */
+header {
+  background: #ffcc33;
+  border-bottom: 4px solid #ff6699;
+  padding: 12px 0;
+}
+
+.navbar {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+}
+
+.nav-btn {
+  background: #ff6699;
+  color: white;
+  border: 2px solid #663399;
+  border-radius: 10px;
+  padding: 8px 16px;
+  cursor: pointer;
+  font-weight: bold;
+}
+.nav-btn:hover {
+  background: #ffcc33;
+  color: #222;
+}
+
+/* ===== Folder Layout ===== */
+main {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 40px 20px;
+}
+
+/* Manila folder container */
+.folder {
+  width: 80%;
+  max-width: 900px;
+  background: #fdf1d6; /* manila color */
+  border: 4px solid #d4b483;
+  border-radius: 12px;
+  box-shadow: 6px 6px 0px #663399;
+  position: relative;
+  padding-top: 40px; /* space for tab */
+}
+
+/* Folder tab */
+.folder-tab {
+  position: absolute;
+  top: -30px;
+  left: 30px;
+  background: #fdf1d6;
+  border: 4px solid #d4b483;
+  border-bottom: none;
+  padding: 10px 25px;
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+  font-weight: bold;
+  color: #663399;
+  box-shadow: 4px -2px 0px #663399;
+}
+
+/* Inside the folder */
+.folder-content {
+  padding: 20px;
+  background: white;
+  border-radius: 6px;
+  border: 2px dashed #cc99ff;
+  min-height: 300px;
+}
+
+/* ===== Footer ===== */
+footer {
+  background: #ffcc33;
+  border-top: 4px solid #ff6699;
+  text-align: center;
+  padding: 12px;
+  font-size: 0.9rem;
+}
+
