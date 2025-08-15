@@ -1,110 +1,32 @@
-/* ====== General Reset ====== */
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
+// Example interaction: clicking navbar buttons updates folder content
+const projectDisplay = document.getElementById("project-display");
+const navButtons = document.querySelectorAll(".nav-btn");
 
-/* ====== Body ====== */
-body {
-  font-family: "Comic Sans MS", "Trebuchet MS", sans-serif;
-  background: linear-gradient(135deg, #7ee8fa, #eec0c6);
-  color: #222;
-}
+const pages = {
+  Home: {
+    title: "Welcome!",
+    desc: "This is my Y2K-inspired portfolio. Use the navigation to explore."
+  },
+  Projects: {
+    title: "My Projects",
+    desc: "Here you’ll find a collection of my work, designed with retro flair."
+  },
+  About: {
+    title: "About Me",
+    desc: "I’m a creative builder with a love for the 2000s web aesthetic."
+  },
+  Contact: {
+    title: "Contact",
+    desc: "Want to reach out? You can email me at example@email.com."
+  }
+};
 
-/* ====== Header ====== */
-header {
-  background: #ffcc33;
-  border-bottom: 4px solid #ff6699;
-  padding: 10px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-header .logo {
-  font-size: 1.5rem;
-  font-weight: bold;
-  color: #663399;
-}
-
-.nav-btn {
-  background: #ff6699;
-  color: white;
-  border: 2px solid #663399;
-  border-radius: 10px;
-  padding: 6px 12px;
-  margin: 0 5px;
-  cursor: pointer;
-  font-weight: bold;
-}
-.nav-btn:hover {
-  background: #ffcc33;
-  color: #222;
-}
-
-/* ====== Layout ====== */
-main {
-  display: flex;
-  height: calc(100vh - 120px);
-}
-
-/* Sidebar */
-.sidebar {
-  width: 250px;
-  background: #99ffcc;
-  border-right: 4px solid #663399;
-  padding: 15px;
-}
-
-.sidebar h2 {
-  margin-bottom: 10px;
-  font-size: 1.2rem;
-  color: #3333cc;
-}
-
-.sidebar ul {
-  list-style: none;
-}
-
-.project-link {
-  display: block;
-  background: #ff99cc;
-  border: 2px solid #cc33ff;
-  border-radius: 8px;
-  padding: 10px;
-  margin: 5px 0;
-  text-align: left;
-  font-weight: bold;
-  cursor: pointer;
-}
-.project-link:hover {
-  background: #ffff66;
-  color: #000;
-}
-
-/* Content Area */
-.content {
-  flex: 1;
-  background: #ffffffaa;
-  padding: 20px;
-}
-
-#project-display {
-  background: white;
-  border: 4px solid #663399;
-  border-radius: 12px;
-  padding: 20px;
-  height: 100%;
-  overflow-y: auto;
-}
-
-/* Footer */
-footer {
-  background: #ffcc33;
-  border-top: 4px solid #ff6699;
-  text-align: center;
-  padding: 10px;
-  font-size: 0.9rem;
-}
-
+navButtons.forEach(button => {
+  button.addEventListener("click", () => {
+    const page = pages[button.textContent];
+    projectDisplay.innerHTML = `
+      <h2>${page.title}</h2>
+      <p>${page.desc}</p>
+    `;
+  });
+});
