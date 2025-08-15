@@ -1,25 +1,23 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Y2K Portfolio • Manilla Folders</title>
-  <link rel="stylesheet" type="text/css" href="./style.css">
-  
+<title>Portfolio Home Page</title>
+	<link rel="stylesheet" type="text/css" href="./style.css">
+	<script src="myscripts.js"></script>
 </head>
 <body>
   <header>
     <div class="header-inner">
-      <div class="logo">YourName • Retro Portfolio</div>
+      <div class="logo">Abigail Mouser</div>
     </div>
   </header>
 
   <!-- Top navigation (folder tabs) -->
   <nav class="topnav" aria-label="Primary">
-    <button class="tab active" data-page="about">About</button>
+    <button class="tab active" data-page="about">About Me</button>
+    <button class="tab" data-page="projects">Projects</button>
     <button class="tab" data-page="contact">Contact</button>
     <button class="tab" data-page="blog">Blog</button>
-    <button class="tab" data-page="projects">Projects</button>
   </nav>
 
   <div class="shell">
@@ -27,168 +25,14 @@
       <!-- Left Sidebar -->
       <aside class="sidebar">
         <section class="box">
-          <h3>Check In Problems?</h3>
-          <p>Try clearing cache or contacting support.</p>
+          <h3>Abigail Mouser - Genius</h3>
+          <p>I promise I'm really smart.</p>
         </section>
         <section class="box">
-          <h3>Hoot Quest</h3>
-          <p>Click here to start ▶</p>
+          <h3>Like what you see?</h3>
+          <p>You're the best.</p>
         </section>
       </aside>
 
-      <!-- Center Panel: Pages -->
-      <main class="panel">
-        <!-- About Page (no inner tabs) -->
-        <section id="about" class="page active" aria-labelledby="about-h">
-          <h2 id="about-h">About Me</h2>
-          <p class="muted">Swap this with your bio, skills, and fun facts.</p>
-          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Add images, lists, and links as you like.</p>
-        </section>
-
-        <!-- Contact Page (no inner tabs) -->
-        <section id="contact" class="page" aria-labelledby="contact-h">
-          <h2 id="contact-h">Contact</h2>
-          <p>Email: <a href="mailto:you@example.com">you@example.com</a></p>
-          <p>Socials: link out to your IG, TikTok, GitHub, etc.</p>
-        </section>
-
-        <!-- Blog Page (no inner tabs) -->
-        <section id="blog" class="page" aria-labelledby="blog-h">
-          <h2 id="blog-h">Blog</h2>
-          <p class="muted">Latest posts</p>
-          <div class="grid">
-            <article class="tile"><h4>Post Title</h4><p>Short summary…</p></article>
-            <article class="tile"><h4>Another Post</h4><p>Short summary…</p></article>
-          </div>
-        </section>
-
-        <!-- Projects Page (layered manilla folders) -->
-        <section id="projects" class="page" aria-labelledby="projects-h">
-          <h2 id="projects-h">Projects</h2>
-          <!-- Optional inner category tabs; keep as-is per your note -->
-          <div class="proj-tabs" role="tablist" aria-label="Project categories">
-            <button class="proj-tab" role="tab" aria-selected="true" aria-controls="cat-all" id="tab-all">All</button>
-            <button class="proj-tab" role="tab" aria-selected="false" aria-controls="cat-web" id="tab-web">Web</button>
-            <button class="proj-tab" role="tab" aria-selected="false" aria-controls="cat-art" id="tab-art">Art</button>
-            <button class="proj-tab" role="tab" aria-selected="false" aria-controls="cat-code" id="tab-code">Code</button>
-          </div>
-
-          <!-- Layered folder stack (visual) -->
-          <div class="folders" id="cat-all" role="tabpanel" aria-labelledby="tab-all">
-            <article class="folder-card layer-3">
-              <div class="tabline"><span class="ftab">Archive</span></div>
-              <div class="folder-body">
-                <div class="grid">
-                  <div class="tile"><h4>Old Site</h4><p>2009 throwback revamp.</p></div>
-                  <div class="tile"><h4>Logo Pack</h4><p>Assorted marks.</p></div>
-                  <div class="tile"><h4>CLI Tool</h4><p>Batch image processor.</p></div>
-                </div>
-              </div>
-            </article>
-            <article class="folder-card layer-2">
-              <div class="tabline"><span class="ftab">In Progress</span></div>
-              <div class="folder-body">
-                <div class="grid">
-                  <div class="tile"><h4>UX Study</h4><p>Checkout flow tests.</p></div>
-                  <div class="tile"><h4>Shader Toy</h4><p>WebGL doodles.</p></div>
-                  <div class="tile"><h4>Sticker Set</h4><p>Pixel mascots.</p></div>
-                </div>
-              </div>
-            </article>
-            <article class="folder-card layer-1">
-              <div class="tabline"><span class="ftab">Featured</span></div>
-              <div class="folder-body">
-                <div class="grid">
-                  <div class="tile"><h4>Portfolio v3</h4><p>Case study & demo.</p></div>
-                  <div class="tile"><h4>Brand Kit</h4><p>Guidelines + assets.</p></div>
-                  <div class="tile"><h4>Game Jam</h4><p>Browser microgame.</p></div>
-                </div>
-              </div>
-            </article>
-          </div>
-
-          <!-- Additional tabs (optional content placeholders) -->
-          <div class="folders page" id="cat-web" role="tabpanel" aria-labelledby="tab-web" hidden>
-            <article class="folder-card layer-2">
-              <div class="tabline"><span class="ftab">Web</span></div>
-              <div class="folder-body">
-                <div class="grid">
-                  <div class="tile"><h4>Landing Page</h4><p>Animated hero.</p></div>
-                  <div class="tile"><h4>Docs Site</h4><p>MDX + search.</p></div>
-                  <div class="tile"><h4>Storefront</h4><p>Cart & checkout.</p></div>
-                </div>
-              </div>
-            </article>
-          </div>
-
-          <div class="folders page" id="cat-art" role="tabpanel" aria-labelledby="tab-art" hidden>
-            <article class="folder-card layer-2">
-              <div class="tabline"><span class="ftab">Art</span></div>
-              <div class="folder-body">
-                <div class="grid">
-                  <div class="tile"><h4>Poster Set</h4><p>Gig posters.</p></div>
-                  <div class="tile"><h4>Spritesheet</h4><p>Pixel characters.</p></div>
-                </div>
-              </div>
-            </article>
-          </div>
-
-          <div class="folders page" id="cat-code" role="tabpanel" aria-labelledby="tab-code" hidden>
-            <article class="folder-card layer-2">
-              <div class="tabline"><span class="ftab">Code</span></div>
-              <div class="folder-body">
-                <div class="grid">
-                  <div class="tile"><h4>API Boiler</h4><p>Express kit.</p></div>
-                  <div class="tile"><h4>Design Tokens</h4><p>Style dictionary.</p></div>
-                </div>
-              </div>
-            </article>
-          </div>
-        </section>
-      </main>
-
-      <!-- Right Sidebar -->
-      <aside class="sidebar">
-        <section class="box">
-          <h3>Retro News</h3>
-          <p>Aug 15: New furniture pack!</p>
-        </section>
-        <section class="box">
-          <h3>Now Playing</h3>
-          <p>♪ Song Title — Artist</p>
-        </section>
-      </aside>
-    </div>
-  </div>
-
-  <script>
-    // ===== Page Switching (top nav) =====
-    const pageTabs = document.querySelectorAll('.topnav .tab');
-    const pages = document.querySelectorAll('.panel .page');
-    pageTabs.forEach(btn=>{
-      btn.addEventListener('click', ()=>{
-        // nav active state
-        pageTabs.forEach(b=>b.classList.remove('active'));
-        btn.classList.add('active');
-        // show page
-        pages.forEach(p=>p.classList.remove('active'));
-        document.getElementById(btn.dataset.page).classList.add('active');
-      });
-    });
-
-    // ===== Project inner tabs (optional, left as-is) =====
-    const catTabs = document.querySelectorAll('.proj-tab');
-    const catPanels = ['cat-all','cat-web','cat-art','cat-code'].map(id=>document.getElementById(id));
-    catTabs.forEach(tab=>{
-      tab.addEventListener('click', ()=>{
-        catTabs.forEach(t=>t.setAttribute('aria-selected','false'));
-        tab.setAttribute('aria-selected','true');
-        catPanels.forEach(p=>{ if(!p) return; p.hidden = true; p.classList.add('page'); });
-        const tgt = document.getElementById(tab.getAttribute('aria-controls'));
-        if(tgt){ tgt.hidden = false; tgt.classList.remove('page'); }
-      });
-    });
-  </script>
 </body>
 </html>
-
