@@ -1,56 +1,383 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <link rel="stylesheet" href="styles.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>YourName • Y2K Portfolio</title>
+  <meta name="description" content="YourName's portfolio – a retro Y2K hub with projects, vibes, and contact." />
+  <style>
+    :root{
+      --bg1:#0b0b2b;         /* deep indigo */
+      --bg2:#1b014d;         /* purple */
+      --neon:#7cf0ff;        /* aqua neon */
+      --magenta:#ff6ad5;     /* candy */
+      --yellow:#ffe66d;      /* y2k yellow */
+      --lime:#caff00;
+      --text:#f6f6ff;
+      --muted:#c9c9e8;
+      --glass:rgba(255,255,255,.12);
+      --glass-strong:rgba(255,255,255,.18);
+      --shadow:0 10px 30px rgba(0,0,0,.35), inset 0 1px 0 rgba(255,255,255,.08);
+      --radius:22px;
+    }
+
+    /* Global reset & base */
+    *,*::before,*::after{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family: "Trebuchet MS", "Comic Sans MS", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      color:var(--text);
+      background:
+        radial-gradient(1200px 800px at 10% -10%, #2c1b85 0%, transparent 50%),
+        radial-gradient(900px 600px at 110% 0%, #3b007a 0%, transparent 45%),
+        linear-gradient(160deg, var(--bg1), var(--bg2));
+      overflow-x:hidden;
+    }
+
+    /* CRT scanline overlay for optional retro mode */
+    .crt::after{
+      content:""; position:fixed; inset:0; pointer-events:none; mix-blend-mode:soft-light;
+      background: repeating-linear-gradient(0deg, rgba(255,255,255,.06) 0 1px, rgba(0,0,0,.06) 1px 2px);
+      opacity:.25; filter: blur(.15px);
+    }
+
+    /* Header */
+    header{
+      position:sticky; top:0; z-index:50;
+      backdrop-filter: blur(8px) saturate(1.2);
+      background:linear-gradient(180deg, rgba(0,0,0,.45), rgba(0,0,0,.2));
+      border-bottom:1px solid rgba(255,255,255,.15);
+    }
+    .wrap{max-width:1100px; margin:0 auto; padding:14px 16px;}
+    .topbar{display:flex; align-items:center; gap:14px;}
+    .logo{
+      display:flex; align-items:center; gap:10px; text-decoration:none; color:var(--text);
+      text-shadow:0 0 12px rgba(124,240,255,.6), 0 0 2px rgba(124,240,255,.6);
+    }
+    .logo .bubble{
+      width:40px; height:40px; border-radius:50%;
+      background: radial-gradient(circle at 30% 30%, #fff 0 10%, #8df 20%, #46c 60%, #235 100%);
+      box-shadow: 0 6px 18px rgba(0,0,0,.5), inset 0 2px 6px rgba(255,255,255,.5);
+    }
+    .badge{font-size:12px; padding:4px 8px; border-radius:999px; color:#001;
+      background:linear-gradient(180deg, var(--yellow), #ffb86b);
+      box-shadow:var(--shadow);
+    }
+
+    nav{
+      margin-left:auto; display:flex; gap:10px; flex-wrap:wrap;
+    }
+    .pill{
+      --glow: rgba(124,240,255,.9);
+      position:relative; display:inline-flex; align-items:center; gap:8px; padding:10px 14px;
+      border-radius:999px; color:var(--text); text-decoration:none; font-weight:600;
+      background:linear-gradient(180deg, rgba(255,255,255,.18), rgba(255,255,255,.06));
+      border:1px solid rgba(255,255,255,.25);
+      box-shadow: var(--shadow), 0 0 18px rgba(124,240,255,0);
+      transition: transform .12s ease, box-shadow .2s ease;
+    }
+    .pill:hover{ transform:translateY(-1px); box-shadow: var(--shadow), 0 0 18px var(--glow); }
+
+    /* Ticker */
+    .ticker{
+      border-top:1px dashed rgba(255,255,255,.25);
+      border-bottom:1px dashed rgba(255,255,255,.25);
+      background:rgba(0,0,0,.25);
+      overflow:hidden; white-space:nowrap; font-weight:700; letter-spacing:.5px;
+    }
+    .ticker .inner{ display:inline-block; padding-block:8px; animation:marquee 18s linear infinite; }
+    .ticker .dot{ color:var(--magenta); margin:0 12px; }
+    @keyframes marquee{ from{ transform:translateX(0);} to{ transform:translateX(-50%);} }
+    @media (prefers-reduced-motion: reduce){ .ticker .inner{ animation:none; } }
+
+    /* Main layout */
+    main{ max-width:1100px; margin:22px auto; padding:0 16px; display:grid; gap:16px; grid-template-columns: 280px 1fr 280px; }
+    @media (max-width: 980px){ main{ grid-template-columns: 1fr; } }
+
+    .card{
+      background:linear-gradient(180deg, rgba(255,255,255,.12), rgba(255,255,255,.06));
+      border:1px solid rgba(255,255,255,.25); border-radius:var(--radius); box-shadow:var(--shadow);
+      padding:16px; position:relative; overflow:hidden;
+    }
+    .card h2{ margin:0 0 10px; font-size:20px; text-shadow:0 0 8px rgba(255,255,255,.15); }
+    .card p{ color:var(--muted); line-height:1.5; }
+
+    /* Sparkles/stickers */
+    .sticker{ position:absolute; filter: drop-shadow(0 4px 8px rgba(0,0,0,.4)); opacity:.9; }
+    .sticker.star{ width:44px; right:12px; top:12px; }
+    .sticker.heart{ width:40px; left:-10px; bottom:-10px; transform:rotate(-14deg); }
+
+    /* Projects */
+    .projects{ display:grid; grid-template-columns: repeat( auto-fill, minmax(220px, 1fr) ); gap:14px; }
+    .project{
+      padding:0; overflow:hidden; cursor:pointer; isolation:isolate; background:transparent;
+    }
+    .project .thumb{ aspect-ratio: 16/10; background:
+        radial-gradient(35% 60% at 30% 30%, rgba(255,255,255,.3), transparent 60%),
+        linear-gradient(45deg, #1fd, #a0f, #ff9bff);
+      border-radius:16px; border:1px solid rgba(255,255,255,.35);
+    }
+    .project .meta{ padding:10px; display:flex; justify-content:space-between; align-items:center; }
+    .tag{ font-size:11px; padding:4px 8px; border-radius:999px; background:rgba(255,255,255,.18); border:1px solid rgba(255,255,255,.35); }
+
+    /* Sidebar modules */
+    .widget{
+      display:grid; gap:10px; background:linear-gradient(180deg, rgba(255,255,255,.14), rgba(255,255,255,.05));
+      border:1px solid rgba(255,255,255,.25); border-radius:18px; padding:12px; box-shadow:var(--shadow);
+    }
+    .widget h3{ margin:0; font-size:16px; }
+    .counter{ font-family: "Courier New", ui-monospace, monospace; font-weight:700; letter-spacing:2px; }
+
+    /* Draggable buddy window */
+    .window{
+      position:fixed; right:20px; bottom:20px; width:280px; z-index:100;
+      background:linear-gradient(180deg, rgba(255,255,255,.14), rgba(255,255,255,.06));
+      border:1px solid rgba(255,255,255,.35); border-radius:14px; box-shadow:var(--shadow);
+    }
+    .window .titlebar{
+      display:flex; align-items:center; gap:8px; padding:8px 10px; cursor:move; user-select:none;
+      background:linear-gradient(180deg, rgba(255,255,255,.2), rgba(255,255,255,.08));
+      border-bottom:1px solid rgba(255,255,255,.25); border-top-left-radius:14px; border-top-right-radius:14px;
+    }
+    .winbtn{ width:10px; height:10px; border-radius:50%; display:inline-block; }
+    .winbtn.red{ background:#ff6b6b; } .winbtn.yellow{ background:#ffd93d; } .winbtn.green{ background:#69db7c; }
+    .window .content{ padding:10px; max-height:240px; overflow:auto; }
+
+    /* Footer */
+    footer{ margin:30px 0 80px; text-align:center; color:var(--muted); font-size:13px; }
+
+    /* Buttons */
+    .btn{
+      display:inline-flex; align-items:center; gap:8px; padding:10px 14px; border-radius:12px; border:1px solid rgba(255,255,255,.35);
+      background:linear-gradient(180deg, rgba(255,255,255,.2), rgba(255,255,255,.08)); color:var(--text); text-decoration:none;
+      box-shadow:var(--shadow); font-weight:700;
+    }
+    .btn:active{ transform: translateY(1px); }
+
+    /* Cursor trail (small circles) */
+    .trail{ position:fixed; width:10px; height:10px; border-radius:50%; pointer-events:none; z-index:9999; opacity:.8; mix-blend-mode:screen; }
+
+    /* Accessibility */
+    @media (prefers-reduced-motion: reduce){
+      .trail{ display:none; }
+      .pill, .project { transition:none; }
+    }
+  </style>
 </head>
 <body>
+  <!-- Toggle CRT mode quickly by adding/removing the 'crt' class on body -->
+  <header>
+    <div class="wrap topbar">
+      <a class="logo" href="#home" aria-label="Home - YourName">
+        <span class="bubble" aria-hidden="true"></span>
+        <div>
+          <div style="font-size:20px; font-weight:900; letter-spacing:.6px;">YourName<span style="color:var(--neon);">.io</span></div>
+          <div style="font-size:12px; color:var(--muted)">designer • developer • human</div>
+        </div>
+      </a>
+      <span class="badge" title="Online!">● Online</span>
+      <nav aria-label="Primary">
+        <a class="pill" href="#projects">Projects</a>
+        <a class="pill" href="#about">About</a>
+        <a class="pill" href="#contact">Contact</a>
+        <button class="pill" id="themeToggle" type="button">CRT Mode</button>
+      </nav>
+    </div>
+    <div class="ticker" aria-hidden="true">
+      <div class="inner">
+        ✨ Welcome to my little corner of the early internet ✨ <span class="dot">•</span> New project dropping soon <span class="dot">•</span> Open to collabs <span class="dot">•</span> 
+        ✨ Welcome to my little corner of the early internet ✨ <span class="dot">•</span> New project dropping soon <span class="dot">•</span> Open to collabs <span class="dot">•</span>
+      </div>
+    </div>
+  </header>
 
-<h1>Hello World!</h1>
+  <main>
+    <!-- Left column -->
+    <section class="card" id="about">
+      <svg class="sticker star" viewBox="0 0 100 100" aria-hidden="true"><polygon fill="url(#g1)" points="50,4 61,36 95,36 66,56 77,90 50,70 23,90 34,56 5,36 39,36"/><defs><linearGradient id="g1" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#fff"/><stop offset="1" stop-color="#ffe66d"/></linearGradient></defs></svg>
+      <h2>About Me</h2>
+      <p>
+        Hey! I'm <strong>YourName</strong>. I build playful, accessible web things with a soft spot for Y2K aesthetics.
+        Swap this text with your story, skills, and what you love making.
+      </p>
+      <p>
+        <a class="btn" href="#contact">Hire me</a>
+      </p>
+    </section>
 
-<!-- Tab links -->
-<div class="tab">
-  <button class="tablinks" onclick="openCity(event, 'London')">London</button>
-  <button class="tablinks" onclick="openCity(event, 'Paris')">Paris</button>
-  <button class="tablinks" onclick="openCity(event, 'Tokyo')">Tokyo</button>
-</div>
+    <!-- Middle column: projects -->
+    <section class="card" id="projects">
+      <svg class="sticker heart" viewBox="0 0 64 64" aria-hidden="true"><path d="M32 56s-5-5-14-13C4 31 10 10 26 16c3 1 6 4 6 4s3-3 6-4c16-6 22 15 8 27C37 51 32 56 32 56z" fill="url(#h1)"/><defs><linearGradient id="h1" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#ff9bff"/><stop offset="1" stop-color="#7cf0ff"/></linearGradient></defs></svg>
+      <h2>Projects</h2>
+      <div class="projects">
+        <!-- Duplicate .project blocks for each project -->
+        <article class="project" tabindex="0" role="button" aria-label="Project One">
+          <div class="thumb" aria-hidden="true"></div>
+          <div class="meta">
+            <div>
+              <div style="font-weight:800">Project One</div>
+              <div style="font-size:12px; color:var(--muted)">Short punchy blurb goes here.</div>
+            </div>
+            <span class="tag">Web App</span>
+          </div>
+        </article>
+        <article class="project" tabindex="0" role="button" aria-label="Project Two">
+          <div class="thumb" aria-hidden="true"></div>
+          <div class="meta">
+            <div>
+              <div style="font-weight:800">Project Two</div>
+              <div style="font-size:12px; color:var(--muted)">Another quick description.</div>
+            </div>
+            <span class="tag">Brand</span>
+          </div>
+        </article>
+        <article class="project" tabindex="0" role="button" aria-label="Project Three">
+          <div class="thumb" aria-hidden="true"></div>
+          <div class="meta">
+            <div>
+              <div style="font-weight:800">Project Three</div>
+              <div style="font-size:12px; color:var(--muted)">Say what it is in 1 line.</div>
+            </div>
+            <span class="tag">Site</span>
+          </div>
+        </article>
+      </div>
+    </section>
 
-<!-- Tab content -->
-<div id="London" class="tabcontent">
-  <h3>London</h3>
-  <p>London is the capital city of England.</p>
-</div>
+    <!-- Right column -->
+    <aside class="widget" aria-labelledby="now-playing">
+      <h3 id="now-playing">Now Playing</h3>
+      <div style="display:flex; gap:10px; align-items:center;">
+        <div style="width:52px; height:52px; border-radius:12px; background:linear-gradient(45deg,#ff6ad5,#7cf0ff,#ffe66d); border:1px solid rgba(255,255,255,.5);"></div>
+        <div>
+          <div style="font-weight:800">Song Title</div>
+          <div style="font-size:12px; color:var(--muted)">Artist • 3:29</div>
+        </div>
+      </div>
+      <div style="display:flex; gap:8px;">
+        <button class="btn" type="button" aria-label="Prev">⏮</button>
+        <button class="btn" type="button" aria-label="Play/Pause">⏯</button>
+        <button class="btn" type="button" aria-label="Next">⏭</button>
+      </div>
+    </aside>
 
-<div id="Paris" class="tabcontent">
-  <h3>Paris</h3>
-  <p>Paris is the capital of France.</p>
-</div>
+    <aside class="widget" aria-labelledby="guestbook">
+      <h3 id="guestbook">Guestbook</h3>
+      <p style="margin:0">Drop a hello in my retro guestbook.</p>
+      <button class="btn" id="openGuestbook" type="button">Sign Guestbook ✍️</button>
+      <div style="display:flex; justify-content:space-between; align-items:center;">
+        <span style="font-size:12px; color:var(--muted)">Visitors</span>
+        <span class="counter" id="counter">000123</span>
+      </div>
+    </aside>
+  </main>
 
-<div id="Tokyo" class="tabcontent">
-  <h3>Tokyo</h3>
-  <p>Tokyo is the capital of Japan.</p>
-</div>
+  <!-- Draggable Buddy List window -->
+  <div class="window" id="buddy">
+    <div class="titlebar" id="buddyDrag">
+      <span class="winbtn red" aria-hidden="true"></span>
+      <span class="winbtn yellow" aria-hidden="true"></span>
+      <span class="winbtn green" aria-hidden="true"></span>
+      <strong style="margin-left:6px;">Buddy List</strong>
+      <span style="margin-left:auto; font-size:12px; color:var(--muted)">online: 3/9</span>
+    </div>
+    <div class="content">
+      <div style="display:grid; gap:8px;">
+        <label style="display:flex; align-items:center; gap:8px;">
+          <input type="checkbox" checked /> <span>you@example.com</span>
+        </label>
+        <label style="display:flex; align-items:center; gap:8px;">
+          <input type="checkbox" /> <span>bestie@penguin.net</span>
+        </label>
+        <label style="display:flex; align-items:center; gap:8px;">
+          <input type="checkbox" checked/> <span>designer@glittermail.com</span>
+        </label>
+      </div>
+    </div>
+  </div>
 
-<script>function openCity(evt, cityName) {
-  // Declare all variables
-  var i, tabcontent, tablinks;
+  <footer>
+    Made with 💜 + CSS glitter • © <span id="year"></span> YourName. 
+    <a class="pill" href="#contact" style="margin-left:8px;">Email Me</a>
+  </footer>
 
-  // Get all elements with class="tabcontent" and hide them
-  tabcontent = document.getElementsByClassName("tabcontent");
-  for (i = 0; i < tabcontent.length; i++) {
-    tabcontent[i].style.display = "none";
-  }
+  <script>
+    // === Helper utilities ===
+    const $ = (sel, parent=document) => parent.querySelector(sel);
+    const $$ = (sel, parent=document) => [...parent.querySelectorAll(sel)];
 
-  // Get all elements with class="tablinks" and remove the class "active"
-  tablinks = document.getElementsByClassName("tablinks");
-  for (i = 0; i < tablinks.length; i++) {
-    tablinks[i].className = tablinks[i].className.replace(" active", "");
-  }
+    // Year
+    $('#year').textContent = new Date().getFullYear();
 
-  // Show the current tab, and add an "active" class to the button that opened the tab
-  document.getElementById(cityName).style.display = "block";
-  evt.currentTarget.className += " active";
-}
+    // Fake visitor counter (persists per device)
+    const counterEl = $('#counter');
+    const key = 'y2k-visitor-count';
+    const base = 123; // change to your seed
+    const stored = parseInt(localStorage.getItem(key) || base, 10);
+    const bumped = stored + Math.floor(Math.random()*3) + 1;
+    localStorage.setItem(key, bumped);
+    counterEl.textContent = String(bumped).padStart(6,'0');
+
+    // CRT mode toggle
+    const themeToggle = $('#themeToggle');
+    const CRT_KEY = 'y2k-crt';
+    const setCRT = (on) => {
+      document.body.classList.toggle('crt', !!on);
+      localStorage.setItem(CRT_KEY, on? '1':'0');
+      themeToggle.textContent = on? 'CRT: On' : 'CRT Mode';
+    };
+    setCRT(localStorage.getItem(CRT_KEY) === '1');
+    themeToggle.addEventListener('click', () => setCRT(!document.body.classList.contains('crt')));
+
+    // Open a basic guestbook prompt
+    $('#openGuestbook').addEventListener('click', () => {
+      const name = prompt('Sign the guestbook! What\'s your name?');
+      if(!name) return;
+      alert(`Thanks, ${name}! Your entry has been saved in our hearts 💖`);
+    });
+
+    // Draggable window logic
+    (function makeDraggable(win, handle){
+      let dragging=false, sx=0, sy=0, x=0, y=0;
+      const down = (e)=>{ dragging=true; sx=e.clientX; sy=e.clientY; const r=win.getBoundingClientRect(); x=r.left; y=r.top; }
+      const move = (e)=>{ if(!dragging) return; const nx = x + (e.clientX - sx); const ny = y + (e.clientY - sy); win.style.left=nx+"px"; win.style.top=ny+"px"; win.style.right='auto'; win.style.bottom='auto'; }
+      const up = ()=> dragging=false;
+      handle.addEventListener('mousedown', down);
+      window.addEventListener('mousemove', move);
+      window.addEventListener('mouseup', up);
+    })( $('#buddy'), $('#buddyDrag') );
+
+    // Cursor sparkle trail — subtle and auto-cleans
+    const supportsReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if(!supportsReduced){
+      const colors = ['#7cf0ff','#ff6ad5','#ffe66d','#caff00'];
+      let i=0;
+      window.addEventListener('pointermove', (e)=>{
+        const d = document.createElement('div');
+        d.className='trail';
+        d.style.left=(e.clientX-5)+'px';
+        d.style.top=(e.clientY-5)+'px';
+        d.style.background = `radial-gradient(circle, ${colors[i%colors.length]} 0%, transparent 70%)`;
+        d.style.transform = `scale(${0.8 + Math.random()*0.6})`;
+        document.body.appendChild(d);
+        i++;
+        setTimeout(()=> d.remove(), 500);
+      });
+    }
+
+    // Keyboard accessible project cards
+    $$('.project').forEach(card=>{
+      const click = ()=> alert('Open the case study or link this to your project URL.');
+      card.addEventListener('click', click);
+      card.addEventListener('keydown', (e)=>{ if(e.key==='Enter' || e.key===' ') { e.preventDefault(); click(); } });
+    });
+
+    // Simple hash routing focus helper
+    window.addEventListener('hashchange', ()=>{
+      const el = document.getElementById(location.hash.replace('#',''));
+      if(el) el.scrollIntoView({behavior:'smooth', block:'start'});
+    });
   </script>
-
 </body>
 </html>
