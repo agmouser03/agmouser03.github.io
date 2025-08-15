@@ -88,6 +88,49 @@
     main{ max-width:1100px; margin:22px auto; padding:0 16px; display:grid; gap:16px; grid-template-columns: 280px 1fr 280px; }
     @media (max-width: 980px){ main{ grid-template-columns: 1fr; } }
 
+     /* Projects */
+    .projects{ display:grid; grid-template-columns: repeat( auto-fill, minmax(220px, 1fr) ); gap:14px; }
+    .project{
+      padding:0; overflow:hidden; cursor:pointer; isolation:isolate; background:transparent;
+    }
+    .project .thumb{ aspect-ratio: 16/10; background:
+        radial-gradient(35% 60% at 30% 30%, rgba(255,255,255,.3), transparent 60%),
+        linear-gradient(45deg, #1fd, #a0f, #ff9bff);
+      border-radius:16px; border:1px solid rgba(255,255,255,.35);
+    }
+    .project .meta{ padding:10px; display:flex; justify-content:space-between; align-items:center; }
+    .tag{ font-size:11px; padding:4px 8px; border-radius:999px; background:rgba(255,255,255,.18); border:1px solid rgba(255,255,255,.35); }
+
+    /* Sidebar modules */
+    .widget{
+      display:grid; gap:10px; background:linear-gradient(180deg, rgba(255,255,255,.14), rgba(255,255,255,.05));
+      border:1px solid rgba(255,255,255,.25); border-radius:18px; padding:12px; box-shadow:var(--shadow);
+    }
+    .widget h3{ margin:0; font-size:16px; }
+    .counter{ font-family: "Courier New", ui-monospace, monospace; font-weight:700; letter-spacing:2px; }
+
+    
+
+    /* Footer */
+    footer{ margin:30px 0 80px; text-align:center; color:var(--muted); font-size:13px; }
+
+    /* Buttons */
+    .btn{
+      display:inline-flex; align-items:center; gap:8px; padding:10px 14px; border-radius:12px; border:1px solid rgba(255,255,255,.35);
+      background:linear-gradient(180deg, rgba(255,255,255,.2), rgba(255,255,255,.08)); color:var(--text); text-decoration:none;
+      box-shadow:var(--shadow); font-weight:700;
+    }
+    .btn:active{ transform: translateY(1px); }
+
+    /* Cursor trail (small circles) */
+    .trail{ position:fixed; width:10px; height:10px; border-radius:50%; pointer-events:none; z-index:9999; opacity:.8; mix-blend-mode:screen; }
+
+    /* Accessibility */
+    @media (prefers-reduced-motion: reduce){
+      .trail{ display:none; }
+      .pill, .project { transition:none; }
+    }
+
     .card{
       background:linear-gradient(180deg, rgba(255,255,255,.12), rgba(255,255,255,.06));
       border:1px solid rgba(255,255,255,.25); border-radius:var(--radius); box-shadow:var(--shadow);
@@ -165,50 +208,7 @@ document.querySelectorAll('.file-tabs .tab').forEach(tab => {
   });
 });
 </script>
-
-
-    /* Projects */
-    .projects{ display:grid; grid-template-columns: repeat( auto-fill, minmax(220px, 1fr) ); gap:14px; }
-    .project{
-      padding:0; overflow:hidden; cursor:pointer; isolation:isolate; background:transparent;
-    }
-    .project .thumb{ aspect-ratio: 16/10; background:
-        radial-gradient(35% 60% at 30% 30%, rgba(255,255,255,.3), transparent 60%),
-        linear-gradient(45deg, #1fd, #a0f, #ff9bff);
-      border-radius:16px; border:1px solid rgba(255,255,255,.35);
-    }
-    .project .meta{ padding:10px; display:flex; justify-content:space-between; align-items:center; }
-    .tag{ font-size:11px; padding:4px 8px; border-radius:999px; background:rgba(255,255,255,.18); border:1px solid rgba(255,255,255,.35); }
-
-    /* Sidebar modules */
-    .widget{
-      display:grid; gap:10px; background:linear-gradient(180deg, rgba(255,255,255,.14), rgba(255,255,255,.05));
-      border:1px solid rgba(255,255,255,.25); border-radius:18px; padding:12px; box-shadow:var(--shadow);
-    }
-    .widget h3{ margin:0; font-size:16px; }
-    .counter{ font-family: "Courier New", ui-monospace, monospace; font-weight:700; letter-spacing:2px; }
-
-    
-
-    /* Footer */
-    footer{ margin:30px 0 80px; text-align:center; color:var(--muted); font-size:13px; }
-
-    /* Buttons */
-    .btn{
-      display:inline-flex; align-items:center; gap:8px; padding:10px 14px; border-radius:12px; border:1px solid rgba(255,255,255,.35);
-      background:linear-gradient(180deg, rgba(255,255,255,.2), rgba(255,255,255,.08)); color:var(--text); text-decoration:none;
-      box-shadow:var(--shadow); font-weight:700;
-    }
-    .btn:active{ transform: translateY(1px); }
-
-    /* Cursor trail (small circles) */
-    .trail{ position:fixed; width:10px; height:10px; border-radius:50%; pointer-events:none; z-index:9999; opacity:.8; mix-blend-mode:screen; }
-
-    /* Accessibility */
-    @media (prefers-reduced-motion: reduce){
-      .trail{ display:none; }
-      .pill, .project { transition:none; }
-    }
+  
   </style>
 </head>
 <body>
@@ -319,29 +319,6 @@ document.querySelectorAll('.file-tabs .tab').forEach(tab => {
     </aside>
   </main>
 
-  <!-- Draggable Buddy List window -->
-  <div class="window" id="buddy">
-    <div class="titlebar" id="buddyDrag">
-      <span class="winbtn red" aria-hidden="true"></span>
-      <span class="winbtn yellow" aria-hidden="true"></span>
-      <span class="winbtn green" aria-hidden="true"></span>
-      <strong style="margin-left:6px;">Buddy List</strong>
-      <span style="margin-left:auto; font-size:12px; color:var(--muted)">online: 3/9</span>
-    </div>
-    <div class="content">
-      <div style="display:grid; gap:8px;">
-        <label style="display:flex; align-items:center; gap:8px;">
-          <input type="checkbox" checked /> <span>you@example.com</span>
-        </label>
-        <label style="display:flex; align-items:center; gap:8px;">
-          <input type="checkbox" /> <span>bestie@penguin.net</span>
-        </label>
-        <label style="display:flex; align-items:center; gap:8px;">
-          <input type="checkbox" checked/> <span>designer@glittermail.com</span>
-        </label>
-      </div>
-    </div>
-  </div>
 
   <footer>
     Made with 💜 + CSS glitter • © <span id="year"></span> YourName. 
@@ -365,16 +342,6 @@ document.querySelectorAll('.file-tabs .tab').forEach(tab => {
     localStorage.setItem(key, bumped);
     counterEl.textContent = String(bumped).padStart(6,'0');
 
-    // CRT mode toggle
-    const themeToggle = $('#themeToggle');
-    const CRT_KEY = 'y2k-crt';
-    const setCRT = (on) => {
-      document.body.classList.toggle('crt', !!on);
-      localStorage.setItem(CRT_KEY, on? '1':'0');
-      themeToggle.textContent = on? 'CRT: On' : 'CRT Mode';
-    };
-    setCRT(localStorage.getItem(CRT_KEY) === '1');
-    themeToggle.addEventListener('click', () => setCRT(!document.body.classList.contains('crt')));
 
     // Open a basic guestbook prompt
     $('#openGuestbook').addEventListener('click', () => {
@@ -383,35 +350,7 @@ document.querySelectorAll('.file-tabs .tab').forEach(tab => {
       alert(`Thanks, ${name}! Your entry has been saved in our hearts 💖`);
     });
 
-    // Draggable window logic
-    (function makeDraggable(win, handle){
-      let dragging=false, sx=0, sy=0, x=0, y=0;
-      const down = (e)=>{ dragging=true; sx=e.clientX; sy=e.clientY; const r=win.getBoundingClientRect(); x=r.left; y=r.top; }
-      const move = (e)=>{ if(!dragging) return; const nx = x + (e.clientX - sx); const ny = y + (e.clientY - sy); win.style.left=nx+"px"; win.style.top=ny+"px"; win.style.right='auto'; win.style.bottom='auto'; }
-      const up = ()=> dragging=false;
-      handle.addEventListener('mousedown', down);
-      window.addEventListener('mousemove', move);
-      window.addEventListener('mouseup', up);
-    })( $('#buddy'), $('#buddyDrag') );
-
-    // Cursor sparkle trail — subtle and auto-cleans
-    const supportsReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    if(!supportsReduced){
-      const colors = ['#7cf0ff','#ff6ad5','#ffe66d','#caff00'];
-      let i=0;
-      window.addEventListener('pointermove', (e)=>{
-        const d = document.createElement('div');
-        d.className='trail';
-        d.style.left=(e.clientX-5)+'px';
-        d.style.top=(e.clientY-5)+'px';
-        d.style.background = `radial-gradient(circle, ${colors[i%colors.length]} 0%, transparent 70%)`;
-        d.style.transform = `scale(${0.8 + Math.random()*0.6})`;
-        document.body.appendChild(d);
-        i++;
-        setTimeout(()=> d.remove(), 500);
-      });
-    }
-
+ 
     // Keyboard accessible project cards
     $$('.project').forEach(card=>{
       const click = ()=> alert('Open the case study or link this to your project URL.');
