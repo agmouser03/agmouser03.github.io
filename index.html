@@ -2,16 +2,21 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Manilla Folder Site</title>
+<title>Manilla Folder Portfolio</title>
 <style>
-/* General */
+/* ===== RESET & BASE ===== */
 body {
   margin: 0;
   font-family: 'Trebuchet MS', sans-serif;
   background-color: #f0e6d6;
+  color: #333;
 }
 
-/* ===== TOP NAV ===== */
+h2 {
+  margin-top: 0;
+}
+
+/* ===== NAVIGATION BAR ===== */
 .navbar {
   display: flex;
   align-items: flex-end;
@@ -23,7 +28,7 @@ body {
 .nav-tab {
   position: relative;
   padding: 8px 20px;
-  background-color: #f5d699;
+  background-color: #f5d699; /* folder beige */
   border: 2px solid #c4a261;
   border-bottom: none;
   border-radius: 8px 8px 0 0;
@@ -41,7 +46,7 @@ body {
   background-color: #fff8e6;
 }
 
-/* Main content container */
+/* ===== PAGE CONTENT ===== */
 .content {
   border: 2px solid #c4a261;
   background-color: #fff8e6;
@@ -84,7 +89,7 @@ body {
 </head>
 <body>
 
-<!-- NAVIGATION BAR -->
+<!-- ===== NAVIGATION ===== -->
 <div class="navbar">
   <div class="nav-tab active" data-page="about">About Me</div>
   <div class="nav-tab" data-page="contact">Contact</div>
@@ -92,20 +97,21 @@ body {
   <div class="nav-tab" data-page="projects">Projects</div>
 </div>
 
-<!-- PAGE CONTENTS -->
+<!-- ===== PAGES ===== -->
 <div class="content" id="about">
   <h2>About Me</h2>
-  <p>Welcome to my retro manilla-folder-themed website! This is my About section.</p>
+  <p>Welcome to my retro manilla-folder-themed portfolio! This section is all about me. Replace this with your bio, skills, and maybe a fun pixel art avatar.</p>
 </div>
 
 <div class="content" id="contact" style="display:none;">
   <h2>Contact</h2>
-  <p>Email me at <a href="#">me@example.com</a></p>
+  <p>Email: <a href="mailto:me@example.com">me@example.com</a></p>
+  <p>Social: Add links to your Twitter, Instagram, GitHub, or other platforms here.</p>
 </div>
 
 <div class="content" id="blog" style="display:none;">
   <h2>Blog</h2>
-  <p>Here are my latest posts...</p>
+  <p>This is where your blog posts will go. You can list recent articles or link to a full blog platform.</p>
 </div>
 
 <div class="content" id="projects" style="display:none;">
@@ -113,28 +119,26 @@ body {
   <div class="folder-stack">
     <div class="folder">
       <div class="folder-tab">Web Design</div>
-      <div class="folder-content">Example web design project content...</div>
+      <div class="folder-content">Preview your web design projects here with screenshots or descriptions.</div>
     </div>
     <div class="folder">
       <div class="folder-tab">Artwork</div>
-      <div class="folder-content">Example artwork project content...</div>
+      <div class="folder-content">Showcase digital art, pixel art, or other creative work.</div>
     </div>
     <div class="folder">
       <div class="folder-tab">Code</div>
-      <div class="folder-content">Example code project content...</div>
+      <div class="folder-content">Highlight your coding projects with GitHub links or demos.</div>
     </div>
   </div>
 </div>
 
+<!-- ===== SCRIPT ===== -->
 <script>
-// Simple tab switching
 document.querySelectorAll('.nav-tab').forEach(tab => {
   tab.addEventListener('click', () => {
-    // Update nav active state
     document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
-    tab.classList.add('active');
-    // Show corresponding page
     document.querySelectorAll('.content').forEach(c => c.style.display = 'none');
+    tab.classList.add('active');
     document.getElementById(tab.dataset.page).style.display = 'block';
   });
 });
@@ -142,5 +146,4 @@ document.querySelectorAll('.nav-tab').forEach(tab => {
 
 </body>
 </html>
-
 
