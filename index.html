@@ -2,37 +2,30 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>My Y2K Portfolio</title>
-  <link rel="stylesheet" href="style.css">
 </head>
-<body>
-  <!-- HEADER NAVIGATION -->
-  <header>
-    <nav class="navbar">
-      <button class="nav-btn">Home</button>
-      <button class="nav-btn">Projects</button>
-      <button class="nav-btn">About</button>
-      <button class="nav-btn">Contact</button>
+<body style="margin:0; font-family:Arial, sans-serif; background:#eec0c6;">
+
+  <!-- NAVIGATION BAR -->
+  <header style="background:#ffcc33; border-bottom:4px solid #ff6699; padding:10px 0; display:flex; justify-content:center; align-items:center;">
+    <div style="position:absolute; left:20px;">
+      <!-- Logo placeholder -->
+      <img src="logo.png" alt="Logo" style="height:40px;">
+    </div>
+    <nav style="display:flex; gap:20px;">
+      <a href="#" style="text-decoration:none; background:#ff6699; color:white; padding:8px 16px; border-radius:8px; font-weight:bold;">Home</a>
+      <a href="#" style="text-decoration:none; background:#ff6699; color:white; padding:8px 16px; border-radius:8px; font-weight:bold;">Projects</a>
+      <a href="#" style="text-decoration:none; background:#ff6699; color:white; padding:8px 16px; border-radius:8px; font-weight:bold;">About</a>
+      <a href="#" style="text-decoration:none; background:#ff6699; color:white; padding:8px 16px; border-radius:8px; font-weight:bold;">Contact</a>
     </nav>
   </header>
 
-  <!-- FOLDER CONTENT -->
-  <main>
-    <div class="folder">
-      <div class="folder-tab">Projects</div>
-      <div class="folder-content" id="project-display">
-        <h2>Welcome!</h2>
-        <p>Select a project from the navigation above to view details.</p>
-      </div>
+  <!-- MAIN CONTENT AREA -->
+  <main style="display:flex; justify-content:center; align-items:center; height:calc(100vh - 80px);">
+    <div style="width:70%; max-width:800px; height:70%; background:#fdf1d6; border:4px solid #d4b483; border-radius:12px; box-shadow:6px 6px 0px #663399; display:flex; justify-content:center; align-items:center; text-align:center; padding:20px;">
+      <p style="font-size:1.2rem; color:#333;">This is the main content area. Each page’s content will load here!</p>
     </div>
   </main>
 
-  <!-- FOOTER -->
-  <footer>
-    <p>© 2025 My Retro Portfolio | Y2K vibes only ✨</p>
-  </footer>
-
-  <script src="script.js"></script>
 </body>
 </html>
