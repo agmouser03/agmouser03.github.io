@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>YourName • Y2K Portfolio</title>
-  <meta name="description" content="YourName's portfolio – a retro Y2K hub with projects, vibes, and contact." />
+  <meta name="description" content="Abigail Mouser Portfolio" />
   <style>
     :root{
       --bg1:#0b0b2b;         /* deep indigo */
@@ -33,13 +33,6 @@
         radial-gradient(900px 600px at 110% 0%, #3b007a 0%, transparent 45%),
         linear-gradient(160deg, var(--bg1), var(--bg2));
       overflow-x:hidden;
-    }
-
-    /* CRT scanline overlay for optional retro mode */
-    .crt::after{
-      content:""; position:fixed; inset:0; pointer-events:none; mix-blend-mode:soft-light;
-      background: repeating-linear-gradient(0deg, rgba(255,255,255,.06) 0 1px, rgba(0,0,0,.06) 1px 2px);
-      opacity:.25; filter: blur(.15px);
     }
 
     /* Header */
@@ -103,10 +96,76 @@
     .card h2{ margin:0 0 10px; font-size:20px; text-shadow:0 0 8px rgba(255,255,255,.15); }
     .card p{ color:var(--muted); line-height:1.5; }
 
-    /* Sparkles/stickers */
-    .sticker{ position:absolute; filter: drop-shadow(0 4px 8px rgba(0,0,0,.4)); opacity:.9; }
-    .sticker.star{ width:44px; right:12px; top:12px; }
-    .sticker.heart{ width:40px; left:-10px; bottom:-10px; transform:rotate(-14deg); }
+    <!-- Tabs Container -->
+<div class="file-tabs">
+  <button class="tab active" data-tab="web">🗂 Web Design</button>
+  <button class="tab" data-tab="art">🎨 Digital Art</button>
+  <button class="tab" data-tab="code">💾 Code Projects</button>
+</div>
+
+<!-- Tab Content -->
+<div class="tab-content active" id="web">
+  <p>Web design project cards go here…</p>
+</div>
+<div class="tab-content" id="art">
+  <p>Digital art project cards go here…</p>
+</div>
+<div class="tab-content" id="code">
+  <p>Code project cards go here…</p>
+</div>
+
+<style>
+.file-tabs {
+  display: flex;
+  gap: 4px;
+  background: var(--bg, #ffd966);
+  padding: 6px;
+  border-bottom: 3px solid #c6a84e;
+}
+.file-tabs .tab {
+  font-family: 'Comic Sans MS', cursive, sans-serif;
+  background: linear-gradient(#fff7cc, #ffec99);
+  border: 2px solid #c6a84e;
+  border-bottom: none;
+  border-radius: 8px 8px 0 0;
+  padding: 6px 14px;
+  cursor: pointer;
+  box-shadow: 0 2px 2px rgba(0,0,0,0.15);
+  transition: background 0.2s;
+}
+.file-tabs .tab:hover {
+  background: linear-gradient(#fffde6, #fff7cc);
+}
+.file-tabs .tab.active {
+  background: linear-gradient(#fffce0, #fff9c4);
+  font-weight: bold;
+}
+.tab-content {
+  display: none;
+  padding: 12px;
+  background: linear-gradient(#fffef8, #fff7e6);
+  border: 2px solid #c6a84e;
+  border-radius: 0 0 8px 8px;
+  box-shadow: inset 0 0 6px rgba(0,0,0,0.1);
+}
+.tab-content.active {
+  display: block;
+}
+</style>
+
+<script>
+document.querySelectorAll('.file-tabs .tab').forEach(tab => {
+  tab.addEventListener('click', () => {
+    // Remove active from all tabs & content
+    document.querySelectorAll('.file-tabs .tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+    // Activate clicked tab & corresponding content
+    tab.classList.add('active');
+    document.getElementById(tab.dataset.tab).classList.add('active');
+  });
+});
+</script>
+
 
     /* Projects */
     .projects{ display:grid; grid-template-columns: repeat( auto-fill, minmax(220px, 1fr) ); gap:14px; }
@@ -129,20 +188,7 @@
     .widget h3{ margin:0; font-size:16px; }
     .counter{ font-family: "Courier New", ui-monospace, monospace; font-weight:700; letter-spacing:2px; }
 
-    /* Draggable buddy window */
-    .window{
-      position:fixed; right:20px; bottom:20px; width:280px; z-index:100;
-      background:linear-gradient(180deg, rgba(255,255,255,.14), rgba(255,255,255,.06));
-      border:1px solid rgba(255,255,255,.35); border-radius:14px; box-shadow:var(--shadow);
-    }
-    .window .titlebar{
-      display:flex; align-items:center; gap:8px; padding:8px 10px; cursor:move; user-select:none;
-      background:linear-gradient(180deg, rgba(255,255,255,.2), rgba(255,255,255,.08));
-      border-bottom:1px solid rgba(255,255,255,.25); border-top-left-radius:14px; border-top-right-radius:14px;
-    }
-    .winbtn{ width:10px; height:10px; border-radius:50%; display:inline-block; }
-    .winbtn.red{ background:#ff6b6b; } .winbtn.yellow{ background:#ffd93d; } .winbtn.green{ background:#69db7c; }
-    .window .content{ padding:10px; max-height:240px; overflow:auto; }
+    
 
     /* Footer */
     footer{ margin:30px 0 80px; text-align:center; color:var(--muted); font-size:13px; }
