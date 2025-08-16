@@ -267,6 +267,20 @@ function openProjectFolder(folderName) {
   desktopArea.appendChild(win);
 }
 
-/* ==========================
-   LOA
+   /* ==========================
+   LOAD ITEM INTO VIEWER
+   ========================== */
+function loadItem(folderName, idx) {
+  const item = projectData[folderName][idx];
+  const viewerId = `viewer-${folderName.replace(/\s+/g, '-')}`;
+  const viewer = document.getElementById(viewerId);
+
+  if (viewer) {
+    viewer.innerHTML = `
+      <h3>${item.title}</h3>
+      <div>${item.content}</div>
+    `;
+  }
+}
+
 
