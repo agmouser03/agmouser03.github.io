@@ -2,36 +2,31 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Windows UI Portfolio</title>
-  <link rel="stylesheet" href="style.css">
+  <title>Portfolio OS</title>
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <!-- Desktop icons -->
-  <div class="desktop">
-    <div class="icon" onclick="openWindow('About Me')">
-      <img src="https://via.placeholder.com/48" alt="About">
-      <span>About Me</span>
-    </div>
-    <div class="icon" onclick="openWindow('Projects')">
-      <img src="https://via.placeholder.com/48" alt="Projects">
+  <!-- Desktop area -->
+  <div id="desktopArea">
+    <!-- Desktop icons -->
+    <div class="desktop-icon" onclick="openProjectsWindow()">
+      <img src="icons/folder.png" alt="Projects">
       <span>Projects</span>
     </div>
-    <div class="icon" onclick="openWindow('Contact')">
-      <img src="https://via.placeholder.com/48" alt="Contact">
+    <div class="desktop-icon" onclick="openAboutWindow()">
+      <img src="icons/ie.png" alt="About">
+      <span>About Me</span>
+    </div>
+    <div class="desktop-icon" onclick="openContactWindow()">
+      <img src="icons/outlook.png" alt="Contact">
       <span>Contact</span>
     </div>
   </div>
 
-  <!-- Container where windows get injected -->
-  <div id="desktopArea"></div>
-
-  <!-- Taskbar for minimized windows -->
+  <!-- Taskbar -->
   <div id="taskbar"></div>
 
-  <!-- Script at bottom so HTML loads first -->
   <script src="script.js"></script>
 </body>
 </html>
-
 
