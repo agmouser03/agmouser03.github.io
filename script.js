@@ -38,6 +38,19 @@ function openWindow(page) {
     content.innerHTML = `<h2>Contact</h2><p>Email: you@example.com</p>`;
   }
 
+else if (page === "Projects") {
+  content.innerHTML = `
+    <h2>Projects</h2>
+    <div class="projects-container">
+      <div class="project-folder" onclick="openProjectFolder('Videos')">📁 Videos</div>
+      <div class="project-folder" onclick="openProjectFolder('Graphics/Photography')">📁 Graphics / Photography</div>
+      <div class="project-folder" onclick="openProjectFolder('Other')">📁 Other</div>
+    </div>
+  `;
+}
+
+
+
   /* =======================
      BUTTON HANDLERS
      ======================= */
@@ -151,5 +164,94 @@ function createTaskbarButton(page, windowEl) {
   });
 
   taskbar.appendChild(btn);
+}
+
+
+function openProjectFolder(folderName) {
+  const desktopArea = document.getElementById("desktopArea");
+
+  const windowEl = document.createElement("div");
+  windowEl.classList.add("window");
+  windowEl.style.left = Math.floor(Math.random() * 200 + 120) + "px";
+  windowEl.style.top = Math.floor(Math.random() * 120 + 100) + "px";
+  windowEl.style.zIndex = ++zIndexCounter;
+
+  // Title bar
+  const titleBar = document.createElement("div");
+  titleBar.classList.add("title-bar");
+  titleBar.innerHTML = `
+    <span>${folderName}</span>
+    <div class="title-buttons">
+      <div class="title-button minimize-btn">_</div>
+      <div class="title-button maximize-btn">□</div>
+      <div class="title-button close-btn">X</div>
+    </div>
+  `;
+
+  // Folder content layout
+  const content = document.createElement("div");
+  content.classList.add("folder-content");
+  content.innerHTML = `
+    <div class="sidebar">
+      <ul id="itemList">
+        <li onclick="loadItem('${folderName}', 'Item 1')">Item 1</li>
+        <li onclick="loadItem('${folderName}', 'Item 2')">Item 2</li>
+        <li onclick="loadItem('${folderName}', 'Item 3')">Item 3</li>
+      </ul>
+    </div>
+    <div class="viewer" id="viewer-${folderName.replace(/\s+/g, '-')}">
+      <p>Select an item to view</p>
+    </div>
+  `;
+
+  // Add window controls
+  titleBar.querySelector(".close-btn").addEventListener("click", () => windowEl.remove());
+  titleBar.querySelector(".minimize-btn").addEventListener("click", () => {
+    windowEl.style.display = "none";
+    createTaskbarButton(folderName, windowEl);
+  });
+
+  let isMaximized = false;
+  let prevPos = {};
+  titleBar.querySelector(".maximize-btn").addEventListener("click", () => {
+    if (!isMaximized) {
+      prevPos = {
+        top: windowEl.style.top,
+        left: windowEl.style.left,
+        width: windowEl.style.width,
+        height: windowEl.style.height
+      };
+      windowEl.style.top = "0px";
+      windowEl.style.left = "0px";
+      windowEl.style.width = "100%";
+      windowEl.style.height = "calc(100% - 40px)";
+      isMaximized = true;
+    } else {
+      windowEl.style.top = prevPos.top;
+      windowEl.style.left = prevPos.left;
+      windowEl.style.width = prevPos.width;
+      windowEl.style.height = prevPos.height;
+      isMaximized = false;
+    }
+  });
+
+  makeDraggable(windowEl, titleBar);
+
+  windowEl.addEventListener("mousedown", () => {
+    windowEl.style.zIndex = ++zIndexCounter;
+  });
+
+  windowEl.appendChild(titleBar);
+  windowEl.appendChild(content);
+  desktopArea.appendChild(windowEl);
+}
+
+/* Load an item into the viewer */
+function loadItem(folderName, itemName) {
+  const viewer = document.getElementById(`viewer-${folderName.replace(/\s+/g, '-')}`);
+  if (viewer) {
+    // Replace this logic with your images/videos/embeds
+    viewer.innerHTML = `<h3>${itemName}</h3><p>Content for ${itemName} goes here.</p>`;
+  }
 }
 
