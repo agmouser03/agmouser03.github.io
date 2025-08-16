@@ -1,23 +1,145 @@
-let zIndexCounter = 10; // ensures active windows come to front
+/* ==========================
+   PROJECT DATA
+   ========================== */
+const projectData = {
+  "Videos": [
+    { title: "Demo Reel", content: `<iframe width="100%" height="200" src="https://www.youtube.com/embed/example" frameborder="0" allowfullscreen></iframe>` },
+    { title: "Short Film", content: `<p>Description or embedded video for Short Film</p>` }
+  ],
+  "Graphics/Photography": [
+    { title: "Poster Design", content: `<img src="images/poster.png" style="max-width:100%;">` },
+    { title: "Photo Series", content: `<img src="images/photo1.jpg" style="max-width:100%;">` }
+  ],
+  "Other": [
+    { title: "Web App", content: `<p>Screenshot and link to live demo</p>` },
+    { title: "Writing Sample", content: `<p>Excerpt or link to PDF</p>` }
+  ]
+};
 
-/* =======================
-   OPEN NEW WINDOW
-   ======================= */
-function openWindow(page) {
-  const desktopArea = document.getElementById("desktopArea");
+let zIndexCounter = 1;
 
-  // Create a window container
-  const windowEl = document.createElement("div");
-  windowEl.classList.add("window");
-  windowEl.style.left = Math.floor(Math.random() * 200 + 100) + "px";
-  windowEl.style.top = Math.floor(Math.random() * 150 + 80) + "px";
-  windowEl.style.zIndex = ++zIndexCounter;
+/* ==========================
+   PROJECTS WINDOW
+   ========================== */
+function openProjectsWindow() {
+  const desktop = document.getElementById("desktopArea");
+  const win = createWindow("Projects", "icons/folder.png");
 
-  // Title bar with controls
+  let content = `<div class="folder-content">
+      <div class="sidebar"><ul>`;
+  if (projectData["Videos"]) content += `<li onclick="openProjectFolder('Videos')">Videos</li>`;
+  if (projectData["Graphics/Photography"]) content += `<li onclick="openProjectFolder('Graphics/Photography')">Graphics/Photography</li>`;
+  if (projectData["Other"]) content += `<li onclick="openProjectFolder('Other')">Other</li>`;
+  content += `</ul></div><div class="viewer"><p>Select a folder</p></div></div>`;
+
+  win.querySelector(".window-content").innerHTML = content;
+  desktop.appendChild(win);
+}
+
+/* Opens a folder window with sidebar + viewer */
+function openProjectFolder(folderName) {
+  const desktop = document.getElementById("desktopArea");
+  const win = createWindow(folderName, "icons/folder.png");
+
+  let itemsHtml = "";
+  projectData[folderName].forEach((item, i) => {
+    itemsHtml += `<li onclick="loadItem('${folderName}', ${i})">${item.title}</li>`;
+  });
+
+  win.querySelector(".window-content").innerHTML = `
+    <div class="folder-content">
+      <div class="sidebar"><ul>${itemsHtml}</ul></div>
+      <div class="viewer" id="viewer-${folderName.replace(/\s+/g,'-')}">
+        <p>Select an item</p>
+      </div>
+    </div>
+  `;
+
+  desktop.appendChild(win);
+}
+
+function loadItem(folderName, idx) {
+  const viewer = document.getElementById(`viewer-${folderName.replace(/\s+/g,'-')}`);
+  if (viewer) viewer.innerHTML = projectData[folderName][idx].content;
+}
+
+/* ==========================
+   ABOUT ME (IE STYLE)
+   ========================== */
+function openAboutWindow() {
+  const desktop = document.getElementById("desktopArea");
+  const win = createWindow("About Me", "icons/ie.png");
+
+  win.querySelector(".window-content").innerHTML = `
+    <div class="ie-tabs">
+      <div class="ie-tab active" onclick="switchIETab(this, 'hobbies')">Hobbies</div>
+      <div class="ie-tab" onclick="switchIETab(this, 'favorites')">Favorites</div>
+      <div class="ie-tab" onclick="switchIETab(this, 'music')">Music</div>
+    </div>
+    <div class="ie-content" id="ie-content">
+      <p>This is my Hobbies section.</p>
+    </div>
+  `;
+
+  desktop.appendChild(win);
+}
+
+function switchIETab(tabEl, section) {
+  document.querySelectorAll(".ie-tab").forEach(t => t.classList.remove("active"));
+  tabEl.classList.add("active");
+
+  const content = document.getElementById("ie-content");
+  if (section === "hobbies") content.innerHTML = `<p>This is my Hobbies section.</p>`;
+  if (section === "favorites") content.innerHTML = `<p>Here are my Favorites.</p>`;
+  if (section === "music") content.innerHTML = `<p>Here’s what I’m listening to.</p>`;
+}
+
+/* ==========================
+   CONTACT (OUTLOOK STYLE)
+   ========================== */
+function openContactWindow() {
+  const desktop = document.getElementById("desktopArea");
+  const win = createWindow("Contact", "icons/outlook.png");
+
+  win.querySelector(".window-content").innerHTML = `
+    <div class="outlook-layout">
+      <div class="outlook-sidebar">
+        <ul>
+          <li onclick="loadContactSection('inbox')">Inbox</li>
+          <li onclick="loadContactSection('sent')">Sent</li>
+          <li onclick="loadContactSection('drafts')">Drafts</li>
+        </ul>
+      </div>
+      <div class="outlook-main" id="contact-main">
+        <p>Select a folder</p>
+      </div>
+    </div>
+  `;
+
+  desktop.appendChild(win);
+}
+
+function loadContactSection(folder) {
+  const main = document.getElementById("contact-main");
+  if (folder === "inbox") main.innerHTML = `<p>Messages from people reaching out.</p>`;
+  if (folder === "sent") main.innerHTML = `<p>Messages I’ve sent.</p>`;
+  if (folder === "drafts") main.innerHTML = `<p>Drafts waiting to be finished.</p>`;
+}
+
+/* ==========================
+   GENERIC WINDOW CREATOR
+   ========================== */
+function createWindow(title, iconPath) {
+  const win = document.createElement("div");
+  win.classList.add("window");
+  win.style.left = Math.floor(Math.random()*200+100)+"px";
+  win.style.top = Math.floor(Math.random()*100+80)+"px";
+  win.style.zIndex = ++zIndexCounter;
+
   const titleBar = document.createElement("div");
   titleBar.classList.add("title-bar");
   titleBar.innerHTML = `
-    <span>${page} - Portfolio</span>
+    <span>${title}</span>
     <div class="title-buttons">
       <div class="title-button minimize-btn">_</div>
       <div class="title-button maximize-btn">□</div>
@@ -25,233 +147,79 @@ function openWindow(page) {
     </div>
   `;
 
-  // Content
   const content = document.createElement("div");
-  content.classList.add("content");
+  content.classList.add("window-content");
 
-  // Different content per page
-  if (page === "About Me") {
-    content.innerHTML = `<h2>About Me</h2><p>This is where your bio goes.</p>`;
-  } else if (page === "Projects") {
-    content.innerHTML = `<h2>Projects</h2><p>Showcase your work here.</p>`;
-  } else if (page === "Contact") {
-    content.innerHTML = `<h2>Contact</h2><p>Email: you@example.com</p>`;
-  }
+  // Controls
+  titleBar.querySelector(".close-btn").addEventListener("click", ()=>win.remove());
 
-else if (page === "Projects") {
-  content.innerHTML = `
-    <h2>Projects</h2>
-    <div class="projects-container">
-      <div class="project-folder" onclick="openProjectFolder('Videos')">📁 Videos</div>
-      <div class="project-folder" onclick="openProjectFolder('Graphics/Photography')">📁 Graphics / Photography</div>
-      <div class="project-folder" onclick="openProjectFolder('Other')">📁 Other</div>
-    </div>
-  `;
-}
-
-
-
-  /* =======================
-     BUTTON HANDLERS
-     ======================= */
-  // Close button
-  titleBar.querySelector(".close-btn").addEventListener("click", () => {
-    windowEl.remove();
+  titleBar.querySelector(".minimize-btn").addEventListener("click", ()=>{
+    win.style.display="none";
+    createTaskbarButton(title, iconPath, win);
   });
 
-  // Minimize button
-  const minimizeBtn = titleBar.querySelector(".minimize-btn");
-  minimizeBtn.addEventListener("click", () => {
-    windowEl.style.display = "none"; // hide window
-    createTaskbarButton(page, windowEl);
-  });
-
-  // Maximize / Restore button
-  const maximizeBtn = titleBar.querySelector(".maximize-btn");
-  let isMaximized = false;
-  let prevPos = { top: "", left: "", width: "", height: "" };
-
-  maximizeBtn.addEventListener("click", () => {
-    if (!isMaximized) {
-      // Save old position/size
-      prevPos = {
-        top: windowEl.style.top,
-        left: windowEl.style.left,
-        width: windowEl.style.width,
-        height: windowEl.style.height
-      };
-      // Expand to full screen (minus taskbar)
-      windowEl.style.top = "0px";
-      windowEl.style.left = "0px";
-      windowEl.style.width = "100%";
-      windowEl.style.height = "calc(100% - 40px)";
-      isMaximized = true;
+  let maximized=false;
+  let prev={};
+  titleBar.querySelector(".maximize-btn").addEventListener("click", ()=>{
+    if(!maximized){
+      prev={top:win.style.top,left:win.style.left,width:win.style.width,height:win.style.height};
+      win.style.top="0"; win.style.left="0";
+      win.style.width="100%"; win.style.height="calc(100% - 40px)";
+      maximized=true;
     } else {
-      // Restore old size
-      windowEl.style.top = prevPos.top;
-      windowEl.style.left = prevPos.left;
-      windowEl.style.width = prevPos.width;
-      windowEl.style.height = prevPos.height;
-      isMaximized = false;
+      win.style.top=prev.top; win.style.left=prev.left;
+      win.style.width=prev.width; win.style.height=prev.height;
+      maximized=false;
     }
   });
 
-  /* =======================
-     WINDOW BEHAVIOR
-     ======================= */
-  makeDraggable(windowEl, titleBar);
+  makeDraggable(win,titleBar);
 
-  // Bring window to front when clicked
-  windowEl.addEventListener("mousedown", () => {
-    windowEl.style.zIndex = ++zIndexCounter;
-  });
+  win.addEventListener("mousedown", ()=>win.style.zIndex=++zIndexCounter);
 
-  // Assemble window
-  windowEl.appendChild(titleBar);
-  windowEl.appendChild(content);
-  desktopArea.appendChild(windowEl);
+  win.appendChild(titleBar);
+  win.appendChild(content);
+  return win;
 }
 
-/* =======================
-   DRAGGING LOGIC
-   ======================= */
-function makeDraggable(windowEl, titleBar) {
-  let isDragging = false;
-  let offsetX, offsetY;
-
-  titleBar.addEventListener("mousedown", (e) => {
-    isDragging = true;
-    offsetX = e.clientX - windowEl.offsetLeft;
-    offsetY = e.clientY - windowEl.offsetTop;
-    windowEl.style.zIndex = ++zIndexCounter; // bring to front
-  });
-
-  document.addEventListener("mousemove", (e) => {
-    if (isDragging) {
-      windowEl.style.left = (e.clientX - offsetX) + "px";
-      windowEl.style.top = (e.clientY - offsetY) + "px";
-    }
-  });
-
-  document.addEventListener("mouseup", () => {
-    isDragging = false;
-  });
-}
-
-/* =======================
-   TASKBAR BUTTON HANDLER
-   ======================= */
-function createTaskbarButton(page, windowEl) {
+/* ==========================
+   TASKBAR BUTTONS (ICONS ONLY)
+   ========================== */
+function createTaskbarButton(title, iconPath, win) {
   const taskbar = document.getElementById("taskbar");
-
-  // Create taskbar button
-  const btn = document.createElement("button");
-  btn.classList.add("taskbar-btn");
-  btn.textContent = page;
-
-  btn.addEventListener("click", () => {
-    if (windowEl.style.display === "none") {
-      windowEl.style.display = "block";
-      windowEl.style.zIndex = ++zIndexCounter;
-    } else {
-      windowEl.style.display = "none";
-    }
-  });
-
-  // Remove taskbar button when window is closed
-  windowEl.addEventListener("DOMNodeRemoved", () => {
+  const btn = document.createElement("div");
+  btn.classList.add("taskbar-button");
+  btn.innerHTML = `<img src="${iconPath}" alt="${title}">`;
+  btn.addEventListener("click", ()=>{
+    win.style.display="flex";
     btn.remove();
   });
-
   taskbar.appendChild(btn);
 }
 
+/* ==========================
+   DRAGGING WINDOWS
+   ========================== */
+function makeDraggable(win, handle) {
+  let offsetX=0, offsetY=0, dragging=false;
 
-function openProjectFolder(folderName) {
-  const desktopArea = document.getElementById("desktopArea");
-
-  const windowEl = document.createElement("div");
-  windowEl.classList.add("window");
-  windowEl.style.left = Math.floor(Math.random() * 200 + 120) + "px";
-  windowEl.style.top = Math.floor(Math.random() * 120 + 100) + "px";
-  windowEl.style.zIndex = ++zIndexCounter;
-
-  // Title bar
-  const titleBar = document.createElement("div");
-  titleBar.classList.add("title-bar");
-  titleBar.innerHTML = `
-    <span>${folderName}</span>
-    <div class="title-buttons">
-      <div class="title-button minimize-btn">_</div>
-      <div class="title-button maximize-btn">□</div>
-      <div class="title-button close-btn">X</div>
-    </div>
-  `;
-
-  // Folder content layout
-  const content = document.createElement("div");
-  content.classList.add("folder-content");
-  content.innerHTML = `
-    <div class="sidebar">
-      <ul id="itemList">
-        <li onclick="loadItem('${folderName}', 'Item 1')">Item 1</li>
-        <li onclick="loadItem('${folderName}', 'Item 2')">Item 2</li>
-        <li onclick="loadItem('${folderName}', 'Item 3')">Item 3</li>
-      </ul>
-    </div>
-    <div class="viewer" id="viewer-${folderName.replace(/\s+/g, '-')}">
-      <p>Select an item to view</p>
-    </div>
-  `;
-
-  // Add window controls
-  titleBar.querySelector(".close-btn").addEventListener("click", () => windowEl.remove());
-  titleBar.querySelector(".minimize-btn").addEventListener("click", () => {
-    windowEl.style.display = "none";
-    createTaskbarButton(folderName, windowEl);
+  handle.addEventListener("mousedown", (e)=>{
+    dragging=true;
+    offsetX=e.clientX - win.offsetLeft;
+    offsetY=e.clientY - win.offsetTop;
+    document.addEventListener("mousemove",move);
+    document.addEventListener("mouseup",up);
   });
 
-  let isMaximized = false;
-  let prevPos = {};
-  titleBar.querySelector(".maximize-btn").addEventListener("click", () => {
-    if (!isMaximized) {
-      prevPos = {
-        top: windowEl.style.top,
-        left: windowEl.style.left,
-        width: windowEl.style.width,
-        height: windowEl.style.height
-      };
-      windowEl.style.top = "0px";
-      windowEl.style.left = "0px";
-      windowEl.style.width = "100%";
-      windowEl.style.height = "calc(100% - 40px)";
-      isMaximized = true;
-    } else {
-      windowEl.style.top = prevPos.top;
-      windowEl.style.left = prevPos.left;
-      windowEl.style.width = prevPos.width;
-      windowEl.style.height = prevPos.height;
-      isMaximized = false;
+  function move(e){
+    if(dragging){
+      win.style.left=(e.clientX-offsetX)+"px";
+      win.style.top=(e.clientY-offsetY)+"px";
     }
-  });
-
-  makeDraggable(windowEl, titleBar);
-
-  windowEl.addEventListener("mousedown", () => {
-    windowEl.style.zIndex = ++zIndexCounter;
-  });
-
-  windowEl.appendChild(titleBar);
-  windowEl.appendChild(content);
-  desktopArea.appendChild(windowEl);
-}
-
-/* Load an item into the viewer */
-function loadItem(folderName, itemName) {
-  const viewer = document.getElementById(`viewer-${folderName.replace(/\s+/g, '-')}`);
-  if (viewer) {
-    // Replace this logic with your images/videos/embeds
-    viewer.innerHTML = `<h3>${itemName}</h3><p>Content for ${itemName} goes here.</p>`;
+  }
+  function up(){
+    dragging=false;
+    document.removeEventListener("mousemove",move);
+    document.removeEventListener("mouseup",up);
   }
 }
-
