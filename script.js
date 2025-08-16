@@ -16,126 +16,62 @@ const projectData = {
   ]
 };
 
-let zIndexCounter = 1;
+let zIndexCounter = 10;
 
 /* ==========================
-   PROJECTS WINDOW
+   HELPER: Draggable
    ========================== */
-function openProjectsWindow() {
-  const desktop = document.getElementById("desktopArea");
-  const win = createWindow("Projects", "icons/folder.png");
+function makeDraggable(win, handle) {
+  let offsetX = 0, offsetY = 0, isDown = false;
 
-  let content = `<div class="folder-content">
-      <div class="sidebar"><ul>`;
-  if (projectData["Videos"]) content += `<li onclick="openProjectFolder('Videos')">Videos</li>`;
-  if (projectData["Graphics/Photography"]) content += `<li onclick="openProjectFolder('Graphics/Photography')">Graphics/Photography</li>`;
-  if (projectData["Other"]) content += `<li onclick="openProjectFolder('Other')">Other</li>`;
-  content += `</ul></div><div class="viewer"><p>Select a folder</p></div></div>`;
-
-  win.querySelector(".window-content").innerHTML = content;
-  desktop.appendChild(win);
-}
-
-/* Opens a folder window with sidebar + viewer */
-function openProjectFolder(folderName) {
-  const desktop = document.getElementById("desktopArea");
-  const win = createWindow(folderName, "icons/folder.png");
-
-  let itemsHtml = "";
-  projectData[folderName].forEach((item, i) => {
-    itemsHtml += `<li onclick="loadItem('${folderName}', ${i})">${item.title}</li>`;
+  handle.addEventListener("mousedown", (e) => {
+    isDown = true;
+    offsetX = e.clientX - win.offsetLeft;
+    offsetY = e.clientY - win.offsetTop;
+    win.style.zIndex = ++zIndexCounter;
   });
 
-  win.querySelector(".window-content").innerHTML = `
-    <div class="folder-content">
-      <div class="sidebar"><ul>${itemsHtml}</ul></div>
-      <div class="viewer" id="viewer-${folderName.replace(/\s+/g,'-')}">
-        <p>Select an item</p>
-      </div>
-    </div>
-  `;
-
-  desktop.appendChild(win);
-}
-
-function loadItem(folderName, idx) {
-  const viewer = document.getElementById(`viewer-${folderName.replace(/\s+/g,'-')}`);
-  if (viewer) viewer.innerHTML = projectData[folderName][idx].content;
+  document.addEventListener("mouseup", () => isDown = false);
+  document.addEventListener("mousemove", (e) => {
+    if (!isDown) return;
+    win.style.left = (e.clientX - offsetX) + "px";
+    win.style.top = (e.clientY - offsetY) + "px";
+  });
 }
 
 /* ==========================
-   ABOUT ME (IE STYLE)
+   TASKBAR ICON
    ========================== */
-function openAboutWindow() {
-  const desktop = document.getElementById("desktopArea");
-  const win = createWindow("About Me", "icons/ie.png");
+function createTaskbarButton(iconSrc, windowEl) {
+  const taskbarIcons = document.getElementById("taskbar-icons");
+  const icon = document.createElement("div");
+  icon.classList.add("taskbar-icon");
+  icon.innerHTML = `<img src="${iconSrc}" alt="icon">`;
 
-  win.querySelector(".window-content").innerHTML = `
-    <div class="ie-tabs">
-      <div class="ie-tab active" onclick="switchIETab(this, 'hobbies')">Hobbies</div>
-      <div class="ie-tab" onclick="switchIETab(this, 'favorites')">Favorites</div>
-      <div class="ie-tab" onclick="switchIETab(this, 'music')">Music</div>
-    </div>
-    <div class="ie-content" id="ie-content">
-      <p>This is my Hobbies section.</p>
-    </div>
-  `;
+  icon.addEventListener("click", () => {
+    if (windowEl.style.display === "none") {
+      windowEl.style.display = "flex";
+      windowEl.style.zIndex = ++zIndexCounter;
+    } else {
+      windowEl.style.display = "none";
+    }
+  });
 
-  desktop.appendChild(win);
-}
-
-function switchIETab(tabEl, section) {
-  document.querySelectorAll(".ie-tab").forEach(t => t.classList.remove("active"));
-  tabEl.classList.add("active");
-
-  const content = document.getElementById("ie-content");
-  if (section === "hobbies") content.innerHTML = `<p>This is my Hobbies section.</p>`;
-  if (section === "favorites") content.innerHTML = `<p>Here are my Favorites.</p>`;
-  if (section === "music") content.innerHTML = `<p>Here’s what I’m listening to.</p>`;
-}
-
-/* ==========================
-   CONTACT (OUTLOOK STYLE)
-   ========================== */
-function openContactWindow() {
-  const desktop = document.getElementById("desktopArea");
-  const win = createWindow("Contact", "icons/outlook.png");
-
-  win.querySelector(".window-content").innerHTML = `
-    <div class="outlook-layout">
-      <div class="outlook-sidebar">
-        <ul>
-          <li onclick="loadContactSection('inbox')">Inbox</li>
-          <li onclick="loadContactSection('sent')">Sent</li>
-          <li onclick="loadContactSection('drafts')">Drafts</li>
-        </ul>
-      </div>
-      <div class="outlook-main" id="contact-main">
-        <p>Select a folder</p>
-      </div>
-    </div>
-  `;
-
-  desktop.appendChild(win);
-}
-
-function loadContactSection(folder) {
-  const main = document.getElementById("contact-main");
-  if (folder === "inbox") main.innerHTML = `<p>Messages from people reaching out.</p>`;
-  if (folder === "sent") main.innerHTML = `<p>Messages I’ve sent.</p>`;
-  if (folder === "drafts") main.innerHTML = `<p>Drafts waiting to be finished.</p>`;
+  taskbarIcons.appendChild(icon);
 }
 
 /* ==========================
    GENERIC WINDOW CREATOR
    ========================== */
-function createWindow(title, iconPath) {
+function createWindow(title, contentHTML, iconSrc) {
+  const desktopArea = document.getElementById("desktopArea");
   const win = document.createElement("div");
   win.classList.add("window");
-  win.style.left = Math.floor(Math.random()*200+100)+"px";
-  win.style.top = Math.floor(Math.random()*100+80)+"px";
+  win.style.left = Math.floor(Math.random() * 200 + 120) + "px";
+  win.style.top = Math.floor(Math.random() * 120 + 100) + "px";
   win.style.zIndex = ++zIndexCounter;
 
+  // Title Bar
   const titleBar = document.createElement("div");
   titleBar.classList.add("title-bar");
   titleBar.innerHTML = `
@@ -148,78 +84,189 @@ function createWindow(title, iconPath) {
   `;
 
   const content = document.createElement("div");
-  content.classList.add("window-content");
+  content.classList.add("content");
+  content.innerHTML = contentHTML;
 
-  // Controls
-  titleBar.querySelector(".close-btn").addEventListener("click", ()=>win.remove());
-
-  titleBar.querySelector(".minimize-btn").addEventListener("click", ()=>{
-    win.style.display="none";
-    createTaskbarButton(title, iconPath, win);
+  // Window controls
+  titleBar.querySelector(".close-btn").addEventListener("click", () => win.remove());
+  titleBar.querySelector(".minimize-btn").addEventListener("click", () => {
+    win.style.display = "none";
+    createTaskbarButton(iconSrc, win);
   });
 
-  let maximized=false;
-  let prev={};
-  titleBar.querySelector(".maximize-btn").addEventListener("click", ()=>{
-    if(!maximized){
-      prev={top:win.style.top,left:win.style.left,width:win.style.width,height:win.style.height};
-      win.style.top="0"; win.style.left="0";
-      win.style.width="100%"; win.style.height="calc(100% - 40px)";
-      maximized=true;
+  let isMaximized = false;
+  let prevPos = {};
+  titleBar.querySelector(".maximize-btn").addEventListener("click", () => {
+    if (!isMaximized) {
+      prevPos = { top: win.style.top, left: win.style.left, width: win.style.width, height: win.style.height };
+      win.style.top = "0px";
+      win.style.left = "0px";
+      win.style.width = "100%";
+      win.style.height = "calc(100% - 40px)";
+      isMaximized = true;
     } else {
-      win.style.top=prev.top; win.style.left=prev.left;
-      win.style.width=prev.width; win.style.height=prev.height;
-      maximized=false;
+      win.style.top = prevPos.top;
+      win.style.left = prevPos.left;
+      win.style.width = prevPos.width;
+      win.style.height = prevPos.height;
+      isMaximized = false;
     }
   });
 
-  makeDraggable(win,titleBar);
-
-  win.addEventListener("mousedown", ()=>win.style.zIndex=++zIndexCounter);
+  makeDraggable(win, titleBar);
+  win.addEventListener("mousedown", () => win.style.zIndex = ++zIndexCounter);
 
   win.appendChild(titleBar);
   win.appendChild(content);
+  desktopArea.appendChild(win);
+
   return win;
 }
 
 /* ==========================
-   TASKBAR BUTTONS (ICONS ONLY)
+   PROJECTS WINDOW
    ========================== */
-function createTaskbarButton(title, iconPath, win) {
-  const taskbar = document.getElementById("taskbar");
-  const btn = document.createElement("div");
-  btn.classList.add("taskbar-button");
-  btn.innerHTML = `<img src="${iconPath}" alt="${title}">`;
-  btn.addEventListener("click", ()=>{
-    win.style.display="flex";
-    btn.remove();
+function openProjectsWindow() {
+  const desktopArea = document.getElementById("desktopArea");
+  const win = document.createElement("div");
+  win.classList.add("window");
+  win.style.left = "150px";
+  win.style.top = "100px";
+  win.style.zIndex = ++zIndexCounter;
+
+  const titleBar = document.createElement("div");
+  titleBar.classList.add("title-bar");
+  titleBar.innerHTML = `
+    <span>Projects</span>
+    <div class="title-buttons">
+      <div class="title-button minimize-btn">_</div>
+      <div class="title-button maximize-btn">□</div>
+      <div class="title-button close-btn">X</div>
+    </div>
+  `;
+
+  let foldersHtml = "";
+  for (let folder in projectData) {
+    foldersHtml += `<li onclick="openProjectFolder('${folder}')">${folder}</li>`;
+  }
+
+  const content = document.createElement("div");
+  content.classList.add("content");
+  content.innerHTML = `
+    <div class="sidebar">
+      <ul>${foldersHtml}</ul>
+    </div>
+    <div class="viewer"><p>Select a folder to view projects</p></div>
+  `;
+
+  // controls
+  titleBar.querySelector(".close-btn").addEventListener("click", () => win.remove());
+  titleBar.querySelector(".minimize-btn").addEventListener("click", () => {
+    win.style.display = "none";
+    createTaskbarButton("icons/projects.png", win);
   });
-  taskbar.appendChild(btn);
+
+  let isMaximized = false;
+  let prevPos = {};
+  titleBar.querySelector(".maximize-btn").addEventListener("click", () => {
+    if (!isMaximized) {
+      prevPos = { top: win.style.top, left: win.style.left, width: win.style.width, height: win.style.height };
+      win.style.top = "0px";
+      win.style.left = "0px";
+      win.style.width = "100%";
+      win.style.height = "calc(100% - 40px)";
+      isMaximized = true;
+    } else {
+      win.style.top = prevPos.top;
+      win.style.left = prevPos.left;
+      win.style.width = prevPos.width;
+      win.style.height = prevPos.height;
+      isMaximized = false;
+    }
+  });
+
+  makeDraggable(win, titleBar);
+  win.addEventListener("mousedown", () => win.style.zIndex = ++zIndexCounter);
+
+  win.appendChild(titleBar);
+  win.appendChild(content);
+  desktopArea.appendChild(win);
 }
 
 /* ==========================
-   DRAGGING WINDOWS
+   OPEN PROJECT FOLDER
    ========================== */
-function makeDraggable(win, handle) {
-  let offsetX=0, offsetY=0, dragging=false;
+function openProjectFolder(folderName) {
+  const desktopArea = document.getElementById("desktopArea");
+  const win = document.createElement("div");
+  win.classList.add("window");
+  win.style.left = Math.floor(Math.random() * 200 + 120) + "px";
+  win.style.top = Math.floor(Math.random() * 120 + 100) + "px";
+  win.style.zIndex = ++zIndexCounter;
 
-  handle.addEventListener("mousedown", (e)=>{
-    dragging=true;
-    offsetX=e.clientX - win.offsetLeft;
-    offsetY=e.clientY - win.offsetTop;
-    document.addEventListener("mousemove",move);
-    document.addEventListener("mouseup",up);
+  const titleBar = document.createElement("div");
+  titleBar.classList.add("title-bar");
+  titleBar.innerHTML = `
+    <span>${folderName}</span>
+    <div class="title-buttons">
+      <div class="title-button minimize-btn">_</div>
+      <div class="title-button maximize-btn">□</div>
+      <div class="title-button close-btn">X</div>
+    </div>
+  `;
+
+  let itemsHtml = "";
+  if (projectData[folderName]) {
+    projectData[folderName].forEach((item, idx) => {
+      itemsHtml += `<li onclick="loadItem('${folderName}', ${idx})">${item.title}</li>`;
+    });
+  }
+
+  const content = document.createElement("div");
+  content.classList.add("folder-content");
+  content.innerHTML = `
+    <div class="sidebar">
+      <ul>${itemsHtml}</ul>
+    </div>
+    <div class="viewer" id="viewer-${folderName.replace(/\s+/g, '-')}">
+      <p>Select an item to view</p>
+    </div>
+  `;
+
+  // controls
+  titleBar.querySelector(".close-btn").addEventListener("click", () => win.remove());
+  titleBar.querySelector(".minimize-btn").addEventListener("click", () => {
+    win.style.display = "none";
+    createTaskbarButton("icons/projects.png", win);
   });
 
-  function move(e){
-    if(dragging){
-      win.style.left=(e.clientX-offsetX)+"px";
-      win.style.top=(e.clientY-offsetY)+"px";
+  let isMaximized = false;
+  let prevPos = {};
+  titleBar.querySelector(".maximize-btn").addEventListener("click", () => {
+    if (!isMaximized) {
+      prevPos = { top: win.style.top, left: win.style.left, width: win.style.width, height: win.style.height };
+      win.style.top = "0px";
+      win.style.left = "0px";
+      win.style.width = "100%";
+      win.style.height = "calc(100% - 40px)";
+      isMaximized = true;
+    } else {
+      win.style.top = prevPos.top;
+      win.style.left = prevPos.left;
+      win.style.width = prevPos.width;
+      win.style.height = prevPos.height;
+      isMaximized = false;
     }
-  }
-  function up(){
-    dragging=false;
-    document.removeEventListener("mousemove",move);
-    document.removeEventListener("mouseup",up);
-  }
+  });
+
+  makeDraggable(win, titleBar);
+  win.addEventListener("mousedown", () => win.style.zIndex = ++zIndexCounter);
+
+  win.appendChild(titleBar);
+  win.appendChild(content);
+  desktopArea.appendChild(win);
 }
+
+/* ==========================
+   LOA
+
