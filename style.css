@@ -91,3 +91,34 @@ body {
   background: rgba(255, 255, 255, 0.2);
   border-radius: 6px;
 }
+
+/* =======================
+   TASKBAR
+   ======================= */
+#taskbar {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 40px;
+  background: linear-gradient(#245edc, #1b4f9c);
+  display: flex;
+  align-items: center;
+  padding: 4px;
+  gap: 4px;
+  border-top: 2px solid #000;
+}
+
+.taskbar-btn {
+  background: #ece9d8;
+  border: 1px solid #888;
+  padding: 4px 10px;
+  font-size: 12px;
+  cursor: pointer;
+  border-radius: 3px;
+}
+
+.taskbar-btn:hover {
+  background: #dcd9c8;
+}
+
