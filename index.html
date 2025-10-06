@@ -2,31 +2,133 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Portfolio OS</title>
-  <link rel="stylesheet" href="style.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Portfolio</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      background: #f9f9f9;
+      color: #333;
+    }
+
+    header {
+      background: #222;
+      color: #fff;
+      padding: 2rem;
+      text-align: center;
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: 2.5rem;
+    }
+
+    header p {
+      margin-top: 0.5rem;
+      font-size: 1.2rem;
+      color: #bbb;
+    }
+
+    main {
+      padding: 2rem;
+      max-width: 900px;
+      margin: auto;
+    }
+
+    section {
+      margin-bottom: 3rem;
+    }
+
+    h2 {
+      border-bottom: 2px solid #ddd;
+      padding-bottom: 0.5rem;
+    }
+
+    .video-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1.5rem;
+      margin-top: 1rem;
+    }
+
+    .video-card {
+      background: white;
+      border-radius: 8px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      overflow: hidden;
+      transition: transform 0.2s;
+    }
+
+    .video-card:hover {
+      transform: scale(1.02);
+    }
+
+    .video-card a {
+      display: block;
+      padding: 1rem;
+      color: #333;
+      text-decoration: none;
+    }
+
+    .video-card a:hover {
+      color: #0077ff;
+    }
+
+    footer {
+      text-align: center;
+      padding: 1.5rem;
+      background: #222;
+      color: #fff;
+      margin-top: 2rem;
+    }
+  </style>
 </head>
 <body>
-  <!-- Desktop area -->
-  <div id="desktopArea">
-    <!-- Desktop icons -->
-    <div class="desktop-icon" onclick="openProjectsWindow()">
-      <img src="Folder Closed.psd" alt="Projects">
-      <span>Projects</span>
-    </div>
-    <div class="desktop-icon" onclick="openAboutWindow()">
-      <img src="Fax Sender Information.psd" alt="About">
-      <span>About Me</span>
-    </div>
-    <div class="desktop-icon" onclick="openContactWindow()">
-      <img src="Email.psd" alt="Contact">
-      <span>Contact</span>
-    </div>
-  </div>
+  <header>
+    <h1>Your Name</h1>
+    <p>Video Editor | Content Creator</p>
+  </header>
 
-  <!-- Taskbar -->
-  <div id="taskbar"></div>
+  <main>
+    <section id="about">
+      <h2>About Me</h2>
+      <p>
+        Hi! I’m [Your Name], and I create, edit, and produce videos.
+        This site is a simple collection of some of my favorite work.
+      </p>
+    </section>
 
-  <script src="script.js"></script>
+    <section id="projects">
+      <h2>My Videos</h2>
+      <div class="video-list" id="video-list">
+        <!-- Video cards will go here -->
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p>&copy; 2025 Your Name. All Rights Reserved.</p>
+  </footer>
+
+  <script>
+    // Simple array of your video projects
+    const videos = [
+      { title: "Project 1", url: "https://www.youtube.com/watch?v=xxxx" },
+      { title: "Project 2", url: "https://vimeo.com/xxxx" },
+      { title: "Project 3", url: "https://www.youtube.com/watch?v=xxxx" }
+    ];
+
+    const videoList = document.getElementById("video-list");
+
+    videos.forEach(video => {
+      const card = document.createElement("div");
+      card.classList.add("video-card");
+
+      card.innerHTML = `<a href="${video.url}" target="_blank">${video.title}</a>`;
+      videoList.appendChild(card);
+    });
+  </script>
 </body>
 </html>
 
